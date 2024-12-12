@@ -20,8 +20,8 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: scripts/deb-source.sh
-      - name: DEB source package
-        uses: actions/upload-artifact@v3
+      - name: fetch source packages
+        uses: actions/upload-artifact@v4
         with:
           name: deb-source
           path: |
