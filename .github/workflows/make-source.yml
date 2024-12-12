@@ -1,0 +1,37 @@
+name: commit/pr build source
+
+on:
+  push:
+    paths:
+      - 'contrib/**'
+      - 'scripts/**'
+  pull_request:
+    paths:
+      - 'contrib/**'
+      - 'scripts/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: 'Source build'
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      - run: scripts/deb-source.sh
+      - name: cache debian sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-source
+          path: |
+            contrib/python-ruyi_*.dsc
+            contrib/python-ruyi_*.orig.tar.gz
+            contrib/python-ruyi_*.debian.tar.*
+
+      - run: scripts/rpm-source.sh
+      - name: cache srpm packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-source
+          path: |
+            contrib/python-ruyi-*.src.rpm
+            contrib/*.log
