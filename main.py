@@ -31,6 +31,9 @@ def update_db():
 def push_db():
     # switch to db directory
     os.chdir('db')
+    subprocess.run(['git', 'config', '--global', 'user.name', 'github-actions[bot]'])
+    subprocess.run(['git', 'config', '--global', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
+
     result = subprocess.run(['git', 'commit', '-am', 'update check results'])
     if result.returncode != 0:
         print("No changes to commit")
