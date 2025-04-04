@@ -6,7 +6,7 @@ from checkers.checker_base import *
 from checkers.checker import *
 import json
 
-TEST = True
+TEST = False
 
 def main():
     clone_db()
