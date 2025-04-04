@@ -1,0 +1,7 @@
+[
+    {
+        "name": "ruyi",
+        "check_path": "https://github.com/ruyisdk/ruyi",
+        "check_type": "github"
+    }
+]
