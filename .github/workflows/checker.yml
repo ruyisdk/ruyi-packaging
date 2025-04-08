@@ -1,4 +1,4 @@
-name: checker
+name: packages-index upstream version checker
 
 on:
   schedule:
