@@ -1,6 +1,8 @@
-from checkers.github_checker import *
+
 from typing import List, Optional
-from checkers.db_models import *
+
+from lib.github_checker import *
+from lib.db_models import *
 def check_all(datas: List[CheckInfoElement]) -> List[CheckResultElement]:
     results = []
     
