@@ -25,6 +25,6 @@ jobs:
         poetry install --no-root
 
     - name: Run main.py
-      run: poetry run python main.py
+      run: poetry run python checker/checker.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,10 +1,12 @@
+
+import json
 import os
 import subprocess
 import shutil
-from checkers.db_models import *
-from checkers.checker_base import *
-from checkers.checker import *
-import json
+
+from lib.db_models import *
+from lib.checker_base import *
+from lib.checker import *
 
 TEST = False
 

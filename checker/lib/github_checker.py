@@ -1,7 +1,9 @@
-from github import Github
+
 import os
-from checkers.db_models import CheckInfoElement, CheckResultElement
-from checkers.checker_base import CheckerBase
+from github import Github
+
+from lib.db_models import CheckInfoElement, CheckResultElement
+from lib.checker_base import CheckerBase
 
 class GitHubReleaseChecker(CheckerBase):
     # Initialize the GitHub client (assuming you have a token)
