@@ -8,7 +8,7 @@ from lib.db_models import *
 from lib.checker_base import *
 from lib.checker import *
 
-TEST = False
+TEST = True
 
 def main():
     clone_db()
@@ -32,6 +32,8 @@ def update_db():
 
 def push_db():
     # switch to db directory
+    if TEST:
+        return
     os.chdir('db')
     subprocess.run(['git', 'config', '--global', 'user.name', 'github-actions[bot]'])
     subprocess.run(['git', 'config', '--global', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])

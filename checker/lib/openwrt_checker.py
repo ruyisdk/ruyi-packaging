@@ -16,7 +16,7 @@ class OpenWrtChecker(CheckerBase):
       soup = BeautifulSoup(html, 'html.parser')
       
       # Select all table rows in the specified path
-      trs = soup.select("div.container div.row div div table tbody tr")
+      trs = soup.select("body > div:nth-child(2) > div:nth-child(2) > div > div > table > tbody > tr")
       
       # Initialize an empty list to store the versions
       version_list = []
@@ -56,7 +56,7 @@ class OpenWrtChecker(CheckerBase):
             segments = data.check_path.split("/")
             current_version_str = segments[5]
             
-            return CheckResultElement(data.name, latest_version, failed=True)
+            return CheckResultElement(data.name, str(latest_version), failed=False)
         except Exception as e:
             return CheckResultElement(data.name, "", failed=True)
     
