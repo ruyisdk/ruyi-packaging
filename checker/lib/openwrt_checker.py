@@ -33,7 +33,7 @@ class OpenWrtChecker(CheckerBase):
               try:
                   ver = semver.VersionInfo.parse(file_name)
                   # append non-prerelease versions
-                  if ver.prerelease is None:
+                  if ver.prerelease is None or len(ver.prerelease) == 0:
                     version_list.append(ver)
               except ValueError:
                   # Skip if not a valid semantic version
@@ -49,10 +49,12 @@ class OpenWrtChecker(CheckerBase):
             
             # Get the latest version
             latest_version = version_list[0]
-            
-            # Compare if the current tag matches the latest release tag
-            if data.check_path == str(latest_version):
-                return CheckResultElement(data.name, "", failed=False)
+
+            # data.check_path is https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/23.05.2/targets/sifiveu/generic/openwrt-23.05.2-sifiveu-generic-sifive_unmatched-ext4-sdcard.img.gz
+            # extract 23.05.2 from the path
+
+            segments = data.check_path.split("/")
+            current_version_str = segments[5]
             
             return CheckResultElement(data.name, latest_version, failed=True)
         except Exception as e:
