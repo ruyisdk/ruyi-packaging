@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ['PyGithub']
+dependencies = ['PyGithub', 'requests', 'beautifulsoup4', 'semver']
 
 [tool.poetry]
 package-mode = false
