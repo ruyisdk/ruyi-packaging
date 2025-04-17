@@ -8,7 +8,7 @@ from lib.db_models import *
 from lib.checker_base import *
 from lib.checker import *
 
-TEST = True
+TEST = False
 
 def main():
     clone_db()
