@@ -4,7 +4,9 @@ import json
 
 class CheckType(Enum):
     GITHUB = 'github'
-    TUNA = 'tuna'
+    OPENWRT = 'openwrt'
+    OPENEULER_LPI4A = 'openeuler_lpi4a'
+ 
 
 @dataclass
 class CheckInfoElement:
