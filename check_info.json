@@ -3,5 +3,20 @@
         "name": "ruyi",
         "check_path": "https://github.com/ruyisdk/ruyi",
         "check_type": "github"
+    },
+    {
+        "name": "Official OpenWRT 23.05.2 image for SiFive Unmatched",
+        "check_path": "https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/23.05.2/targets/sifiveu/generic/openwrt-23.05.2-sifiveu-generic-sifive_unmatched-ext4-sdcard.img.gz",
+        "check_type": "openwrt"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A-boot",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/boot-20231130-224203.ext4.zst",
+        "check_type": "openeuler_lpi4a"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A-root",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/root-20231130-224203.ext4.zst",
+        "check_type": "openeuler_lpi4a"
     }
 ]
