@@ -65,7 +65,7 @@ class OpenEulerLpi4aChecker(CheckerBase):
             
             if match:
                 # Convert matched timestamp (removing hyphen) to integer
-                timestamp = int(match.group())
+                timestamp = int(match.group().replace("-", ""))
                 timestamp_list.append(timestamp)
         
         return timestamp_list
