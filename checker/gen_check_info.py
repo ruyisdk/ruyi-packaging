@@ -15,7 +15,6 @@ class DistFileInfo:
     name: str
     url: str
 
-
 def main():
     # get all files in path
     files = []
@@ -44,10 +43,6 @@ def main():
         for url in urls:
             check_info.append(CheckInfoElement(name=url.name, check_path=url.url, check_type=filter_check_type(url.url)))
     
-    # convert to json with indent=4
-    # check_type is CheckType, convert to str
-    
-    
     accessible_count = 0
     unknown_count = 0
     unknown_and_accessible_count = 0
@@ -69,7 +64,7 @@ def main():
         "check_path": item.check_path,
         "check_type": item.check_type.value
     } for item in check_info], indent=4)
-    
+
     with open("check_info.json", "w") as f:
         f.write(json_str)
 
@@ -87,6 +82,7 @@ def check_if_url_is_accessible(url: str) -> bool:
     except requests.RequestException as e:
         print(f"Error accessing URL: {e}")
         return False
+
 def filter_check_type(url: str):
     # if startwith https://github.com
     if url.startswith("https://github.com"):
@@ -99,8 +95,6 @@ def filter_check_type(url: str):
         return CheckType.REVYOS
     else:
         return CheckType.UNKNOWN
-    
-
 
 def filter_mirror(s: str) -> str:
     if s.startswith("mirror://ruyi-3rdparty-canaan/"):
@@ -109,7 +103,6 @@ def filter_mirror(s: str) -> str:
         return s.replace("mirror://ruyi-3rdparty-milkv/", "https://mirror.iscas.ac.cn/ruyisdk/3rdparty/milkv/")
     else:
         return s
-
 
 def parse_single_file(path) -> DistFileInfo:
     with open(path, 'rb') as f:  # tomli requires binary mode
