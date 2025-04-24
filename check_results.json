@@ -1,7 +1,22 @@
 [
     {
         "name": "ruyi",
-        "result": "https://github.com/ruyisdk/ruyi/releases/tag/0.32.0-alpha.20250409",
+        "result": "https://github.com/ruyisdk/ruyi/releases/tag/0.32.0",
+        "failed": false
+    },
+    {
+        "name": "Official OpenWRT 23.05.2 image for SiFive Unmatched",
+        "result": "24.10.1",
+        "failed": false
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A-boot",
+        "result": 20231130224942,
+        "failed": false
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A-root",
+        "result": 20231130224942,
         "failed": false
     }
 ]
