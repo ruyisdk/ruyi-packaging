@@ -3,9 +3,12 @@ from enum import Enum
 import json
 
 class CheckType(Enum):
+    UNKNOWN = 'unknown'
+    UNKNOWN_AND_INACCESSIBLE = 'unknown_inaccessible'
     GITHUB = 'github'
     OPENWRT = 'openwrt'
     OPENEULER_LPI4A = 'openeuler_lpi4a'
+    REVYOS = 'revyos'
  
 
 @dataclass
