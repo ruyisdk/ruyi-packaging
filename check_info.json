@@ -225,16 +225,6 @@
         "check_type": "revyos"
     },
     {
-        "name": "U-Boot image for LicheePi 4A (16G RAM) and openEuler RISC-V 23.09 v1",
-        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/u-boot-with-spl-lpi4a-16g.bin",
-        "check_type": "openeuler_lpi4a"
-    },
-    {
-        "name": "U-Boot image for LicheePi 4A (8G RAM) and openEuler RISC-V 23.09 v1",
-        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/u-boot-with-spl-lpi4a.bin",
-        "check_type": "openeuler_lpi4a"
-    },
-    {
         "name": "U-Boot image for Milk-V Meles (Single-rank, 4G RAM), for RevyOS, v1.0.0",
         "check_path": "https://github.com/milkv-meles/meles-images/releases/download/v1.0.0/u-boot-with-spl-singlerank.bin",
         "check_type": "github"
