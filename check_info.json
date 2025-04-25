@@ -5,18 +5,268 @@
         "check_type": "github"
     },
     {
+        "name": "Official Arduino SDK image for Milk-V Duo (64M RAM, SD card)",
+        "check_path": "https://mirror.iscas.ac.cn/ruyisdk/3rdparty/milkv/repacks/arduino-milkv-duo-sd-v1.1.2-2024-0801.ruyi1.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "Official Arduino SDK image for Milk-V Duo (256M RAM, SD card)",
+        "check_path": "https://mirror.iscas.ac.cn/ruyisdk/3rdparty/milkv/repacks/arduino-milkv-duo256m-sd-v1.1.2-2024-0801.ruyi1.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "Armbian 25.2.0-trunk.86 image for Pine64 Star64",
+        "check_path": "https://github.com/armbian/community/releases/download/25.2.0-trunk.86/Armbian_community_25.2.0-trunk.86_Star64_noble_edge_5.15.0_xfce_desktop.img.xz",
+        "check_type": "github"
+    },
+    {
+        "name": "Official bianbu desktop image for Banana Pi F3 version v2.0.4",
+        "check_path": "https://archive.spacemit.com/image/k1/version/bianbu/bianbu-24.04-desktop-k1-v2.0.4-release-20241206002355.img.zip",
+        "check_type": "unknown_inaccessible"
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo-musl-riscv64-sd_v2.0.0.img.zip",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/download/v2.0.0/milkv-duo-musl-riscv64-sd_v2.0.0.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223 (with Python)",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk/releases/download/Duo-V1.0.7/milkv-duo-python-v1.0.7-2023-1223.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/download/v2.0.0/milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223 (with Python)",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk/releases/download/Duo-V1.0.7/milkv-duo256m-python-v1.0.7-2023-1223.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duos-musl-riscv64-sd_v2.0.0.img.zip",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/download/v2.0.0/milkv-duos-musl-riscv64-sd_v2.0.0.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Buildroot SDK & FreeRTOS image for Sipeed LicheeRV Nano, 20241129",
+        "check_path": "https://github.com/sipeed/LicheeRV-Nano-Build/releases/download/20241129/2024-11-29-11-46-540e94.img.xz",
+        "check_type": "github"
+    },
+    {
+        "name": "Official CanMV Debian SDK v1.3 image for Canaan Kendryte K230",
+        "check_path": "https://kendryte-download.canaan-creative.com/developer/k230/canmv_debian_sdcard_sdk_1.3.img.gz",
+        "check_type": "unknown_inaccessible"
+    },
+    {
+        "name": "CanMV Linux SDK image for Canaan Kendryte K230D, built by PLCT, RV64ILP32 ABI, with demos",
+        "check_path": "https://mirror.iscas.ac.cn/ruyisdk/3rdparty/canaan/temp/kendryte-k230d-linux-sdk-demo.rv64ilp32.20240731.ext4.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "CanMV Linux SDK image for Canaan Kendryte K230D, built by PLCT, RV64LP64 ABI, with demos",
+        "check_path": "https://mirror.iscas.ac.cn/ruyisdk/3rdparty/canaan/temp/kendryte-k230d-linux-sdk-demo.rv64lp64.20240731.ext4.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "Official CanMV Ubuntu SDK v1.3 image for Canaan Kendryte K230",
+        "check_path": "https://kendryte-download.canaan-creative.com/developer/k230/canmv_ubuntu_sdcard_1.3.img.gz",
+        "check_type": "unknown_inaccessible"
+    },
+    {
+        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars CM v1.0.6 (SD card)",
+        "check_path": "https://github.com/milkv-mars/mars-buildroot-sdk/releases/download/V1.0.6/mars-cm_debian-desktop_sdk-v3.6.1_cm4-io-board_sdcard_v1.0.6.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
+        "check_path": "https://github.com/milkv-mars/mars-buildroot-sdk/releases/download/V1.0.6/mars_debian-desktop_sdk-v3.6.1_sdcard_v1.0.6.img.zip",
+        "check_type": "github"
+    },
+    {
+        "name": "Debian image for Sipeed LicheeRV Nano with Sophgo SG200x, from https://github.com/Fishwaldo",
+        "check_path": "https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.4.0/licheervnano_sd.img.lz4",
+        "check_type": "github"
+    },
+    {
+        "name": "Official FreeBSD 14.0 RELEASE riscv64 live image",
+        "check_path": "https://download.freebsd.org/releases/riscv/riscv64/ISO-IMAGES/14.0/FreeBSD-14.0-RELEASE-riscv-riscv64-mini-memstick.img.xz",
+        "check_type": "unknown_inaccessible"
+    },
+    {
+        "name": "openEuler 23.03 v1 headless image for Allwinner D1",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.03-V1-riscv64/D1/openEuler-23.03-V1-base-d1-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.03 v1 XFCE image for Allwinner D1",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.03-V1-riscv64/D1/openEuler-23.03-V1-xfce-d1-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Milk-V Pioneer with SG2042",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/SG2042/openEuler-23.09-V1-base-sg2042-preview-refreshed.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for Milk-V Pioneer with SG2042",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/SG2042/openEuler-23.09-V1-xfce-sg2042-preview-refreshed.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for SiFive HiFive Unmatched",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/Unmatched/openEuler-23.09-V1-base-unmatched-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for SiFive HiFive Unmatched",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/Unmatched/openEuler-23.09-V1-xfce-unmatched-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/boot-20231130-224203.ext4.zst",
+        "check_type": "openeuler_lpi4a"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/root-20231130-224203.ext4.zst",
+        "check_type": "openeuler_lpi4a"
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/boot-20231130-224942.ext4.zst",
+        "check_type": "openeuler_lpi4a"
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/root-20231130-224942.ext4.zst",
+        "check_type": "openeuler_lpi4a"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for StarFive VisionFive",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/Visionfive/openEuler-23.09-V1-base-visionfive-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for StarFive VisionFive",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/Visionfive/openEuler-23.09-V1-xfce-visionfive-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for StarFive VisionFive2",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/Visionfive2/openEuler-23.09-V1-base-visionfive2-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for StarFive VisionFive2",
+        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/Visionfive2/openEuler-23.09-V1-xfce-visionfive2-preview.img.zst",
+        "check_type": "unknown"
+    },
+    {
+        "name": "Official OpenBSD 7.4 riscv64 live image",
+        "check_path": "https://mirrors.tuna.tsinghua.edu.cn/OpenBSD/7.4/riscv64/install74.img",
+        "check_type": "unknown_inaccessible"
+    },
+    {
+        "name": "Official openKylin 1.0 image for SiFive HiFive Unmatched",
+        "check_path": "https://releases.openkylin.top/1.0/openKylin-1.0-hifive-unmatched-riscv64.img.xz",
+        "check_type": "unknown"
+    },
+    {
         "name": "Official OpenWRT 23.05.2 image for SiFive Unmatched",
         "check_path": "https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/23.05.2/targets/sifiveu/generic/openwrt-23.05.2-sifiveu-generic-sifive_unmatched-ext4-sdcard.img.gz",
         "check_type": "openwrt"
     },
     {
-        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A-boot",
-        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/boot-20231130-224203.ext4.zst",
-        "check_type": "openeuler_lpi4a"
+        "name": "RevyOS 20250123 image for Milk-V Meles",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/meles/20250123/boot-meles-20250123_071145.ext4.zst",
+        "check_type": "revyos"
     },
     {
-        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A-root",
-        "check_path": "https://mirror.iscas.ac.cn/openeuler-sig-riscv/openEuler-RISC-V/preview/openEuler-23.09-V1-riscv64/lpi4a/root-20231130-224203.ext4.zst",
-        "check_type": "openeuler_lpi4a"
+        "name": "RevyOS 20250123 image for Milk-V Meles",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/meles/20250123/root-meles-20250123_071145.ext4.zst",
+        "check_type": "revyos"
+    },
+    {
+        "name": "RevyOS 20241230 image for Milk-V Pioneer Box with SG2042",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/sg2042/20241230/revyos-pioneer-20241230-212249.img.zst",
+        "check_type": "revyos"
+    },
+    {
+        "name": "RevyOS 20240127 image for Sipeed Lichee Cluster 4A",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4amain/20240127/boot-lpi4amain-20240127_105111.ext4.zst",
+        "check_type": "revyos"
+    },
+    {
+        "name": "RevyOS 20240127 image for Sipeed Lichee Cluster 4A",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4amain/20240127/root-lpi4amain-20240127_105111.ext4.zst",
+        "check_type": "revyos"
+    },
+    {
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "check_path": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/download/20240319/boot-lpi4a-20240202_141632.ext4.lz4",
+        "check_type": "github"
+    },
+    {
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "check_path": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/download/20240319/root-lpi4a-20240202_141632.ext4.lz4",
+        "check_type": "github"
+    },
+    {
+        "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250110/root-lpi4a-20250110_151339.ext4.zst",
+        "check_type": "revyos"
+    },
+    {
+        "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250110/u-boot-with-spl-lpi4a-main_8gemmc.bin",
+        "check_type": "revyos"
+    },
+    {
+        "name": "U-Boot image for Milk-V Meles (Single-rank, 4G RAM), for RevyOS, v1.0.0",
+        "check_path": "https://github.com/milkv-meles/meles-images/releases/download/v1.0.0/u-boot-with-spl-singlerank.bin",
+        "check_type": "github"
+    },
+    {
+        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
+        "check_path": "https://github.com/milkv-meles/meles-images/releases/download/v1.0.0/u-boot-with-spl-dualrank.bin",
+        "check_type": "github"
+    },
+    {
+        "name": "U-Boot image for Sipeed Lichee Cluster 4A (16G RAM) and RevyOS 20240127",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4amain/20240127/u-boot-with-spl-lc4a-16g-main.bin",
+        "check_type": "revyos"
+    },
+    {
+        "name": "U-Boot image for Sipeed Lichee Cluster 4A (8G RAM) and RevyOS 20240127",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4amain/20240127/u-boot-with-spl-lc4a-main.bin",
+        "check_type": "revyos"
+    },
+    {
+        "name": "U-Boot image for Sipeed Lichee Console 4A (16G RAM) and RevyOS 20240202",
+        "check_path": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/download/20240319/u-boot-with-spl-console16g.bin",
+        "check_type": "github"
+    },
+    {
+        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
+        "check_path": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/download/20240319/u-boot-with-spl-console8g.bin",
+        "check_type": "github"
+    },
+    {
+        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250110",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250110/u-boot-with-spl-lpi4a-16g-main.bin",
+        "check_type": "revyos"
+    },
+    {
+        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250110",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250110/u-boot-with-spl-lpi4a-main.bin",
+        "check_type": "revyos"
+    },
+    {
+        "name": "Official Ubuntu 23.10 Server image for SiFive HiFive Unmatched",
+        "check_path": "https://cdimage.ubuntu.com/releases/23.10/release/ubuntu-23.10-preinstalled-server-riscv64+unmatched.img.xz",
+        "check_type": "unknown_inaccessible"
     }
 ]
