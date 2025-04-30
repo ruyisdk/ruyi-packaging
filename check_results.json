@@ -81,12 +81,12 @@
     },
     {
         "name": "RevyOS 20250123 image for Milk-V Meles",
-        "result": "20250323",
+        "result": "20250420",
         "failed": false
     },
     {
         "name": "RevyOS 20250123 image for Milk-V Meles",
-        "result": "20250323",
+        "result": "20250420",
         "failed": false
     },
     {
@@ -116,12 +116,12 @@
     },
     {
         "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
-        "result": "20250323",
+        "result": "20250420",
         "failed": false
     },
     {
         "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
-        "result": "20250323",
+        "result": "20250420",
         "failed": false
     },
     {
@@ -156,12 +156,12 @@
     },
     {
         "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250110",
-        "result": "20250323",
+        "result": "20250420",
         "failed": false
     },
     {
         "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250110",
-        "result": "20250323",
+        "result": "20250420",
         "failed": false
     }
 ]
