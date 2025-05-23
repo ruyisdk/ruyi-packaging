@@ -21,6 +21,7 @@ class CheckInfoElement:
 class CheckResultElement:
     name: str
     result: str
+    current_version: str
     failed: bool
 
 # [{"name":"ruyi","check_path": "", "check_type": "github"}]

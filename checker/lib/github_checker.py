@@ -24,14 +24,17 @@ class GitHubReleaseChecker(CheckerBase):
             latest = repository.get_releases()[0]
             
             if latest is None:
-                return CheckResultElement(data.name, "", failed=True)
+                return CheckResultElement(data.name, "", "", failed=True)
 
             # Compare if the current tag matches the latest release tag
             #if segments[5] == latest.tag_name:
             #    return CheckResultElement(CheckStatus.AlreadyNewest, latest.html_url, data)
             
             # You may want to add more handling here for newer versions
-            return CheckResultElement(data.name, latest.html_url, failed=False)
+            current_version = ""
+            if len(segments) > 5:
+                current_version = segments[5]
+            return CheckResultElement(data.name, latest.html_url, current_version, failed=False)
             
         except Exception as e:
-            return CheckResultElement(data.name, "", failed=True)
+            return CheckResultElement(data.name, "", "", failed=True)
