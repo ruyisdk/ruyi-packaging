@@ -26,7 +26,7 @@ class OpenEulerLpi4aChecker(CheckerBase):
         versions.sort(reverse=True)
         # Get the latest version
         latest_version = versions[0]
-        return CheckResultElement(data.name, latest_version, failed=False)
+        return CheckResultElement(data.name, latest_version, version, failed=False)
 
     @staticmethod
     def get_timestamps(url, filter):
