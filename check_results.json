@@ -1,7 +1,7 @@
 [
     {
         "name": "ruyi",
-        "result": "https://github.com/ruyisdk/ruyi/releases/tag/0.34.0-beta.20250526",
+        "result": "https://github.com/ruyisdk/ruyi/releases/tag/0.34.0",
         "failed": false
     },
     {
@@ -81,12 +81,12 @@
     },
     {
         "name": "RevyOS 20250123 image for Milk-V Meles",
-        "result": "20250420",
+        "result": "20250526",
         "failed": false
     },
     {
         "name": "RevyOS 20250123 image for Milk-V Meles",
-        "result": "20250420",
+        "result": "20250526",
         "failed": false
     },
     {
@@ -116,12 +116,12 @@
     },
     {
         "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
-        "result": "20250420",
+        "result": "20250526",
         "failed": false
     },
     {
         "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
-        "result": "20250420",
+        "result": "20250526",
         "failed": false
     },
     {
@@ -156,12 +156,12 @@
     },
     {
         "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250110",
-        "result": "20250420",
+        "result": "20250526",
         "failed": false
     },
     {
         "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250110",
-        "result": "20250420",
+        "result": "20250526",
         "failed": false
     }
 ]
