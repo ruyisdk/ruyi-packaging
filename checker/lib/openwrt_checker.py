@@ -56,7 +56,7 @@ class OpenWrtChecker(CheckerBase):
             segments = data.check_path.split("/")
             current_version_str = segments[5]
             
-            return CheckResultElement(data.name, str(latest_version), failed=False)
+            return CheckResultElement(data.name, str(latest_version), current_version_str, failed=False)
         except Exception as e:
             return CheckResultElement(data.name, "", failed=True)
     

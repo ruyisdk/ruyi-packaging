@@ -11,13 +11,12 @@ from urllib.parse import urlparse
 class RevyOSChecker(CheckerBase):
     def check(self, data: CheckInfoElement) -> CheckResultElement:
         # keep for future use
-        # segments = data.check_path.split("/")
-        # filename = segments[-1]
-        # regex = re.compile(r'\d{8}')
-        # match = regex.search(filename)
-        # if not match:
-        #     return CheckResultElement(data.name, "", failed=True)
-        # version = match.group().replace("-", "")
+        
+        regex = re.compile(r'\d{8}')
+        match = regex.search(data.check_path)
+        if not match:
+            return CheckResultElement(data.name, "", "", failed=True)
+        current_version = match.group().replace("-", "")
         
         # Get the latest timestamp from the URL
         versions = self.get_timestamps(data.check_path)
@@ -28,7 +27,7 @@ class RevyOSChecker(CheckerBase):
         # Get the latest version
         latest_version = versions[0]
         
-        return CheckResultElement(data.name, latest_version, failed=False)
+        return CheckResultElement(data.name, latest_version, current_version, failed=False)
     
     @staticmethod
     def get_timestamps(url):
