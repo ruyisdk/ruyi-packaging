@@ -27,6 +27,8 @@ def update_db():
     path = 'db/check_info.json'
     check_info = parse_check_info(open(path).read())
     check_results = check_all(check_info)
+    if os.path.exists('db/check_results.json'):
+        os.remove('db/check_results.json')
     with open('db/check_results.json', 'w') as f:
         json.dump([result.__dict__ for result in check_results], f, indent=4)
 

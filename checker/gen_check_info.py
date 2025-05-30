@@ -2,39 +2,24 @@ from enum import Enum
 import json
 
 import requests
+import pathlib
 from lib.db_models import CheckInfoElement, CheckType
 import tomli
 import os
 from dataclasses import dataclass
 import semver
 
-path = "..\\packages-index\\manifests\\board-image\\"
+root_path = "..\\packages-index\\manifests\\board-image\\"
 
 @dataclass
 class DistFileInfo:
     name: str
     url: str
+    path: str
 
 def main():
     # get all files in path
-    files = []
-    for root, dirs, filenames in os.walk(path):
-        # if filenames count > 1 then filter the newest version file using semver
-        # if filenames count == 1 then add the file to files
-        if len(filenames) > 1:
-            # filter the filenames using semver
-            semver_filenames = []
-            for filename in filenames:
-                if filename.endswith(".toml"):
-                    semver_filenames.append(filename)
-            # sort the filenames using semver
-            semver_filenames.sort(key=lambda x: semver.VersionInfo.parse(x.split(".toml")[0]))
-            # get the newest version file
-            files.append(os.path.join(root, semver_filenames[-1]))
-        elif len(filenames) == 1:
-            for filename in filenames:
-                if filename.endswith(".toml"):
-                    files.append(os.path.join(root, filename))
+    files = get_files()
 
     check_info = []
     
@@ -69,6 +54,27 @@ def main():
         f.write(json_str)
 
     print(f"Total: {len(check_info)}, \nAccessible: {accessible_count}, \nUnknown: {unknown_count}, \nImplemented Rate: {(len(check_info)-unknown_count)/len(check_info) * 100:.1f}%, \nRequired Implemented Rate: {((1-(unknown_and_accessible_count/len(check_info))) * 100):.1f}%")
+
+def get_files():
+    files = []
+    for root, dirs, filenames in os.walk(root_path):
+        # if filenames count > 1 then filter the newest version file using semver
+        # if filenames count == 1 then add the file to files
+        if len(filenames) > 1:
+            # filter the filenames using semver
+            semver_filenames = []
+            for filename in filenames:
+                if filename.endswith(".toml"):
+                    semver_filenames.append(filename)
+            # sort the filenames using semver
+            semver_filenames.sort(key=lambda x: semver.VersionInfo.parse(x.split(".toml")[0]))
+            # get the newest version file
+            files.append(os.path.join(root, semver_filenames[-1]))
+        elif len(filenames) == 1:
+            for filename in filenames:
+                if filename.endswith(".toml"):
+                    files.append(os.path.join(root, filename))
+    return files
 
 def check_if_url_is_accessible(url: str) -> bool:
     try:
@@ -107,6 +113,7 @@ def filter_mirror(s: str) -> str:
 def parse_single_file(path) -> list[DistFileInfo]:
     with open(path, 'rb') as f:  # tomli requires binary mode
         data = f.read()
+    relative_path = str(pathlib.Path(path).relative_to(pathlib.Path(root_path)))
     
     toml = tomli.loads(data.decode('utf-8'))
     urls_result = []
@@ -121,7 +128,7 @@ def parse_single_file(path) -> list[DistFileInfo]:
             restricted_software_name = toml["metadata"]["desc"]
             assert restricted_software_name == "Kingsoft WPS Office", f"new restricted software has been added, not WPS, name: {restricted_software_name}"
 
-            urls_result.append(DistFileInfo(name=desc, url=f"wps://{ver}"))
+            urls_result.append(DistFileInfo(name=desc, url=f"wps://{ver}", path=path))
             continue
         
         urls = o.get("urls", None)
@@ -136,11 +143,11 @@ def parse_single_file(path) -> list[DistFileInfo]:
                 else:
                     urls1 = [x for x in urls1 if "mirror" not in x]
                 assert original_length - len(urls1) == 1
-                urls_result.append(DistFileInfo(name=desc, url=urls1[0]))
+                urls_result.append(DistFileInfo(name=desc, url=urls1[0], path=relative_path))
             elif urls1:
-                urls_result.append(DistFileInfo(name=desc, url=filter_mirror(urls1[0])))
+                urls_result.append(DistFileInfo(name=desc, url=filter_mirror(urls1[0]), path=relative_path))
         else:
-            urls_result.append(DistFileInfo(name=desc, url=name))
+            urls_result.append(DistFileInfo(name=desc, url=name, path=relative_path))
     
     return urls_result
 

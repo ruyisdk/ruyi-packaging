@@ -14,14 +14,20 @@ class OpenEulerLpi4aChecker(CheckerBase):
         regex = re.compile(r'\d{8}-\d{6}')
         match = regex.search(filename)
         if not match:
-            return CheckResultElement(data.name, "", failed=True)
+            if "u-boot" in filename:
+                return CheckResultElement(data.name, filename, filename, failed=False)
+            return CheckResultElement(data.name, "", "", failed=True)
         version = match.group().replace("-", "")
         if filename.startswith("boot-"):
             versions = self.get_timestamps(data.check_path, "boot-")
         elif filename.startswith("root-"):
             versions = self.get_timestamps(data.check_path, "root-")
+        elif filename.startswith("u-boot-with-spl-lpi4a.bin"):
+            versions = self.get_timestamps(data.check_path, "u-boot-with-spl-lpi4a.bin")
+        elif filename.startswith("u-boot-with-spl-lpi4a-16g.bin"):
+            versions = self.get_timestamps(data.check_path, "u-boot-with-spl-lpi4a-16g.bin")
         else:
-            return CheckResultElement(data.name, "", failed=True)
+            return CheckResultElement(data.name,"", "", failed=True)
         # Sort the versions in descending order
         versions.sort(reverse=True)
         # Get the latest version
