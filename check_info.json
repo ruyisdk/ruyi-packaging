@@ -25,13 +25,13 @@
         "check_type": "unknown_inaccessible"
     },
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo-musl-riscv64-sd_v2.0.0.img.zip",
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
         "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/download/v2.0.0/milkv-duo-musl-riscv64-sd_v2.0.0.img.zip",
         "check_type": "github"
     },
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223 (with Python)",
-        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk/releases/download/Duo-V1.0.7/milkv-duo-python-v1.0.7-2023-1223.img.zip",
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk/releases/download/Duo-V1.0.7/milkv-duo-v1.0.7-2023-1223.img.zip",
         "check_type": "github"
     },
     {
@@ -40,12 +40,12 @@
         "check_type": "github"
     },
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223 (with Python)",
-        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk/releases/download/Duo-V1.0.7/milkv-duo256m-python-v1.0.7-2023-1223.img.zip",
+        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223",
+        "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk/releases/download/Duo-V1.0.7/milkv-duo256m-v1.0.7-2023-1223.img.zip",
         "check_type": "github"
     },
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duos-musl-riscv64-sd_v2.0.0.img.zip",
+        "name": "Official Buildroot SDK image for Milk-V Duo S v2.0.0 (SD card)",
         "check_path": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/download/v2.0.0/milkv-duos-musl-riscv64-sd_v2.0.0.img.zip",
         "check_type": "github"
     },
@@ -215,13 +215,13 @@
         "check_type": "github"
     },
     {
-        "name": "RevyOS 20250323 image for Sipeed LicheePi 4A",
-        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250323/boot-lpi4a-20250323_154524.ext4.zst",
+        "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250420/boot-lpi4a-20250420_084701.ext4.zst",
         "check_type": "revyos"
     },
     {
-        "name": "RevyOS 20250323 image for Sipeed LicheePi 4A",
-        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250323/root-lpi4a-20250323_154524.ext4.zst",
+        "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250420/root-lpi4a-20250420_084701.ext4.zst",
         "check_type": "revyos"
     },
     {
@@ -235,8 +235,8 @@
         "check_type": "openeuler_lpi4a"
     },
     {
-        "name": "U-Boot image for Milk-V Meles (16G RAM) and RevyOS 20250123",
-        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/meles/20250123/u-boot-with-spl-meles-16g.bin",
+        "name": "U-Boot image for Milk-V Meles (16G RAM) and RevyOS 20250323",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/meles/20250323/u-boot-with-spl-meles-16g.bin",
         "check_type": "revyos"
     },
     {
@@ -270,13 +270,13 @@
         "check_type": "github"
     },
     {
-        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250323",
-        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250323/u-boot-with-spl-lpi4a-16g-main.bin",
+        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250420",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250420/u-boot-with-spl-lpi4a-16g-main.bin",
         "check_type": "revyos"
     },
     {
-        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250323",
-        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250323/u-boot-with-spl-lpi4a-main.bin",
+        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250420",
+        "check_path": "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/20250420/u-boot-with-spl-lpi4a-main.bin",
         "check_type": "revyos"
     },
     {
