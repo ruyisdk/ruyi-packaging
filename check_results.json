@@ -1,6 +1,24 @@
 [
     {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
+        "result": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/tag/v2.0.0",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
+        "name": "Buildroot SDK & FreeRTOS image for Sipeed LicheeRV Nano, 20241129",
+        "result": "https://github.com/sipeed/LicheeRV-Nano-Build/releases/tag/20250417",
+        "current_version": "20241129",
+        "failed": false
+    },
+    {
         "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duos-musl-riscv64-sd_v2.0.0.img.zip",
+        "result": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/tag/v2.0.0",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo-musl-riscv64-sd_v2.0.0.img.zip",
         "result": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/tag/v2.0.0",
         "current_version": "v2.0.0",
         "failed": false
@@ -18,27 +36,9 @@
         "failed": false
     },
     {
-        "name": "Buildroot SDK & FreeRTOS image for Sipeed LicheeRV Nano, 20241129",
-        "result": "https://github.com/sipeed/LicheeRV-Nano-Build/releases/tag/20250417",
-        "current_version": "20241129",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
-        "result": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/tag/v2.0.0",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
         "name": "ruyi",
         "result": "https://github.com/ruyisdk/ruyi/releases/tag/0.34.0",
         "current_version": "",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo-musl-riscv64-sd_v2.0.0.img.zip",
-        "result": "https://github.com/milkv-duo/duo-buildroot-sdk-v2/releases/tag/v2.0.0",
-        "current_version": "v2.0.0",
         "failed": false
     },
     {
@@ -48,9 +48,9 @@
         "failed": false
     },
     {
-        "name": "Debian image for Sipeed LicheeRV Nano with Sophgo SG200x, from https://github.com/Fishwaldo",
-        "result": "https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/tag/v1.4.0",
-        "current_version": "v1.4.0",
+        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
+        "result": "https://github.com/milkv-mars/mars-buildroot-sdk/releases/tag/V1.0.6",
+        "current_version": "V1.0.6",
         "failed": false
     },
     {
@@ -60,9 +60,45 @@
         "failed": false
     },
     {
-        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
-        "result": "https://github.com/milkv-mars/mars-buildroot-sdk/releases/tag/V1.0.6",
-        "current_version": "V1.0.6",
+        "name": "Debian image for Sipeed LicheeRV Nano with Sophgo SG200x, from https://github.com/Fishwaldo",
+        "result": "https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/tag/v1.4.0",
+        "current_version": "v1.4.0",
+        "failed": false
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for Sipeed LicheePi 4A",
+        "result": "20231130224942",
+        "current_version": "20231130224942",
+        "failed": false
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A",
+        "result": "20231130224942",
+        "current_version": "20231130224203",
+        "failed": false
+    },
+    {
+        "name": "openEuler 23.09 v1 XFCE image for Sipeed LicheePi 4A",
+        "result": "20231130224942",
+        "current_version": "20231130224942",
+        "failed": false
+    },
+    {
+        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A",
+        "result": "20231130224942",
+        "current_version": "20231130224203",
+        "failed": false
+    },
+    {
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "result": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/tag/20240606",
+        "current_version": "20240319",
+        "failed": false
+    },
+    {
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "result": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/tag/20240606",
+        "current_version": "20240319",
         "failed": false
     },
     {
@@ -84,9 +120,15 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
-        "result": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/tag/20240606",
-        "current_version": "20240319",
+        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
+        "result": "https://github.com/milkv-meles/meles-images/releases/tag/v1.0.0",
+        "current_version": "v1.0.0",
+        "failed": false
+    },
+    {
+        "name": "U-Boot image for Milk-V Meles (Single-rank, 4G RAM), for RevyOS, v1.0.0",
+        "result": "https://github.com/milkv-meles/meles-images/releases/tag/v1.0.0",
+        "current_version": "v1.0.0",
         "failed": false
     },
     {
@@ -108,51 +150,9 @@
         "failed": false
     },
     {
-        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A",
-        "result": "20231130224942",
-        "current_version": "20231130224203",
-        "failed": false
-    },
-    {
-        "name": "openEuler 23.09 v1 headless image for Sipeed LicheePi 4A",
-        "result": "20231130224942",
-        "current_version": "20231130224203",
-        "failed": false
-    },
-    {
-        "name": "openEuler 23.09 v1 XFCE image for Sipeed LicheePi 4A",
-        "result": "20231130224942",
-        "current_version": "20231130224942",
-        "failed": false
-    },
-    {
-        "name": "openEuler 23.09 v1 XFCE image for Sipeed LicheePi 4A",
-        "result": "20231130224942",
-        "current_version": "20231130224942",
-        "failed": false
-    },
-    {
-        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
-        "result": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/tag/20240606",
-        "current_version": "20240319",
-        "failed": false
-    },
-    {
         "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
         "result": "20250526",
         "current_version": "20250110",
-        "failed": false
-    },
-    {
-        "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
-        "result": "20250526",
-        "current_version": "20250110",
-        "failed": false
-    },
-    {
-        "name": "U-Boot image for Milk-V Meles (Single-rank, 4G RAM), for RevyOS, v1.0.0",
-        "result": "https://github.com/milkv-meles/meles-images/releases/tag/v1.0.0",
-        "current_version": "v1.0.0",
         "failed": false
     },
     {
@@ -162,27 +162,15 @@
         "failed": false
     },
     {
-        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
-        "result": "https://github.com/milkv-meles/meles-images/releases/tag/v1.0.0",
-        "current_version": "v1.0.0",
+        "name": "RevyOS 20250110 image for Sipeed LicheePi 4A",
+        "result": "20250526",
+        "current_version": "20250110",
         "failed": false
     },
     {
         "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
         "result": "https://github.com/0x754C/sipeed-th1520-laptop-extra/releases/tag/20240606",
         "current_version": "20240319",
-        "failed": false
-    },
-    {
-        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250110",
-        "result": "20250526",
-        "current_version": "20250110",
-        "failed": false
-    },
-    {
-        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250110",
-        "result": "20250526",
-        "current_version": "20250110",
         "failed": false
     },
     {
@@ -195,6 +183,18 @@
         "name": "U-Boot image for Sipeed Lichee Cluster 4A (8G RAM) and RevyOS 20240127",
         "result": "20240127",
         "current_version": "20240127",
+        "failed": false
+    },
+    {
+        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250110",
+        "result": "20250526",
+        "current_version": "20250110",
+        "failed": false
+    },
+    {
+        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250110",
+        "result": "20250526",
+        "current_version": "20250110",
         "failed": false
     }
 ]
