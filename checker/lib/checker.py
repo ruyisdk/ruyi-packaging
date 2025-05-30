@@ -9,7 +9,7 @@ from lib.github_checker import GitHubReleaseChecker
 from lib.openwrt_checker import OpenWrtChecker
 from lib.openeuler_lpi4a_checker import OpenEulerLpi4aChecker
 from lib.revyos_checker import RevyOSChecker
-from lib.db_models import *
+from lib.db_models import CheckInfoElement, CheckResultElement, CheckType
 
 class ProgressTracker:
     def __init__(self, total_tasks):

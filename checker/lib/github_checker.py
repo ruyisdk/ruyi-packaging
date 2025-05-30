@@ -34,7 +34,7 @@ class GitHubReleaseChecker(CheckerBase):
             current_version = ""
             if len(segments) > 5:
                 current_version = segments[5]
-            return CheckResultElement(data.name, latest.html_url, current_version, failed=False)
+            return CheckResultElement(data.name, latest.tag_name, current_version, failed=False)
             
         except Exception as e:
             return CheckResultElement(data.name, "", "", failed=True)

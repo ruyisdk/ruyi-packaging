@@ -104,7 +104,7 @@ def filter_mirror(s: str) -> str:
     else:
         return s
 
-def parse_single_file(path) -> DistFileInfo:
+def parse_single_file(path) -> list[DistFileInfo]:
     with open(path, 'rb') as f:  # tomli requires binary mode
         data = f.read()
     

@@ -4,11 +4,11 @@ import os
 import subprocess
 import shutil
 
-from lib.db_models import *
-from lib.checker_base import *
-from lib.checker import *
+from lib.db_models import CheckInfoElement, CheckType, parse_check_info
+from lib.checker_base import CheckerBase
+from lib.checker import check_all
 
-TEST = False
+TEST = True
 
 def main():
     clone_db()
