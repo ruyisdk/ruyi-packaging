@@ -1,24 +1,12 @@
 [
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
-        "result": "v1.1.4",
-        "current_version": "Duo-V1.0.7",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223",
-        "result": "v1.1.4",
-        "current_version": "Duo-V1.0.7",
+        "name": "ruyi",
+        "result": "0.35.0",
+        "current_version": "",
         "failed": false
     },
     {
         "name": "Official Buildroot SDK image for Milk-V Duo S v2.0.0 (SD card)",
-        "result": "v2.0.1",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
         "result": "v2.0.1",
         "current_version": "v2.0.0",
         "failed": false
@@ -30,15 +18,27 @@
         "failed": false
     },
     {
-        "name": "ruyi",
-        "result": "0.35.0",
-        "current_version": "",
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
+        "result": "v2.0.1",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223",
+        "result": "v1.1.4",
+        "current_version": "Duo-V1.0.7",
         "failed": false
     },
     {
         "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
         "result": "v2.0.1",
         "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
+        "result": "v1.1.4",
+        "current_version": "Duo-V1.0.7",
         "failed": false
     },
     {
@@ -54,15 +54,15 @@
         "failed": false
     },
     {
-        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
-        "result": "V1.0.6",
-        "current_version": "V1.0.6",
-        "failed": false
-    },
-    {
         "name": "Debian image for Sipeed LicheeRV Nano with Sophgo SG200x, from https://github.com/Fishwaldo",
         "result": "v1.4.0",
         "current_version": "v1.4.0",
+        "failed": false
+    },
+    {
+        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
+        "result": "V1.0.6",
+        "current_version": "V1.0.6",
         "failed": false
     },
     {
@@ -96,25 +96,25 @@
         "failed": false
     },
     {
-        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
-        "result": "v1.0.0",
-        "current_version": "v1.0.0",
-        "failed": false
-    },
-    {
         "name": "U-Boot image for Milk-V Meles (Single-rank, 4G RAM), for RevyOS, v1.0.0",
         "result": "v1.0.0",
         "current_version": "v1.0.0",
         "failed": false
     },
     {
-        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
+        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
+        "result": "v1.0.0",
+        "current_version": "v1.0.0",
+        "failed": false
+    },
+    {
+        "name": "U-Boot image for Sipeed Lichee Console 4A (16G RAM) and RevyOS 20240202",
         "result": "20240606",
         "current_version": "20240319",
         "failed": false
     },
     {
-        "name": "U-Boot image for Sipeed Lichee Console 4A (16G RAM) and RevyOS 20240202",
+        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
         "result": "20240606",
         "current_version": "20240319",
         "failed": false
