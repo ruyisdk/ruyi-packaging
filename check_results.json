@@ -1,32 +1,14 @@
 [
     {
-        "name": "ruyi",
-        "result": "0.36.0",
-        "current_version": "",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223",
-        "result": "v1.1.4",
-        "current_version": "Duo-V1.0.7",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo S v2.0.0 (SD card)",
-        "result": "v2.0.1",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
-        "result": "v2.0.1",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
         "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
         "result": "v1.1.4",
         "current_version": "Duo-V1.0.7",
+        "failed": false
+    },
+    {
+        "name": "ruyi",
+        "result": "0.36.0",
+        "current_version": "",
         "failed": false
     },
     {
@@ -42,19 +24,37 @@
         "failed": false
     },
     {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
+        "result": "v2.0.1",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo S v2.0.0 (SD card)",
+        "result": "v2.0.1",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (256M RAM) v1.0.7-2023-1223",
+        "result": "v1.1.4",
+        "current_version": "Duo-V1.0.7",
+        "failed": false
+    },
+    {
         "name": "Armbian 25.2.0-trunk.86 image for Pine64 Star64",
         "result": "25.8.0-trunk.277",
         "current_version": "25.2.0-trunk.86",
         "failed": false
     },
     {
-        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
+        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars CM v1.0.6 (SD card)",
         "result": "V1.0.6",
         "current_version": "V1.0.6",
         "failed": false
     },
     {
-        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars CM v1.0.6 (SD card)",
+        "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
         "result": "V1.0.6",
         "current_version": "V1.0.6",
         "failed": false
@@ -69,12 +69,6 @@
         "name": "Official OpenWRT 23.05.2 image for SiFive Unmatched",
         "result": "24.10.2",
         "current_version": "23.05.2",
-        "failed": false
-    },
-    {
-        "name": "RevyOS 20250123 image for Milk-V Meles",
-        "result": "20250526",
-        "current_version": "20250123",
         "failed": false
     },
     {
@@ -102,9 +96,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
-        "result": "20240606",
-        "current_version": "20240319",
+        "name": "RevyOS 20250123 image for Milk-V Meles",
+        "result": "20250526",
+        "current_version": "20250123",
         "failed": false
     },
     {
@@ -114,9 +108,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20240127 image for Sipeed Lichee Cluster 4A",
-        "result": "20240127",
-        "current_version": "20240127",
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "result": "20240606",
+        "current_version": "20240319",
         "failed": false
     },
     {
@@ -126,9 +120,9 @@
         "failed": false
     },
     {
-        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
-        "result": "v1.0.0",
-        "current_version": "v1.0.0",
+        "name": "RevyOS 20240127 image for Sipeed Lichee Cluster 4A",
+        "result": "20240127",
+        "current_version": "20240127",
         "failed": false
     },
     {
@@ -144,15 +138,9 @@
         "failed": false
     },
     {
-        "name": "U-Boot image for Sipeed Lichee Console 4A (16G RAM) and RevyOS 20240202",
-        "result": "20240606",
-        "current_version": "20240319",
-        "failed": false
-    },
-    {
-        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
-        "result": "20240606",
-        "current_version": "20240319",
+        "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
+        "result": "20250526",
+        "current_version": "20250420",
         "failed": false
     },
     {
@@ -162,21 +150,33 @@
         "failed": false
     },
     {
+        "name": "U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, v1.0.0",
+        "result": "v1.0.0",
+        "current_version": "v1.0.0",
+        "failed": false
+    },
+    {
+        "name": "U-Boot image for Sipeed Lichee Console 4A (16G RAM) and RevyOS 20240202",
+        "result": "20240606",
+        "current_version": "20240319",
+        "failed": false
+    },
+    {
         "name": "U-Boot image for Sipeed Lichee Cluster 4A (16G RAM) and RevyOS 20240127",
         "result": "20240127",
         "current_version": "20240127",
         "failed": false
     },
     {
-        "name": "U-Boot image for Sipeed Lichee Cluster 4A (8G RAM) and RevyOS 20240127",
-        "result": "20240127",
-        "current_version": "20240127",
+        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
+        "result": "20240606",
+        "current_version": "20240319",
         "failed": false
     },
     {
-        "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
-        "result": "20250526",
-        "current_version": "20250420",
+        "name": "U-Boot image for Sipeed Lichee Cluster 4A (8G RAM) and RevyOS 20240127",
+        "result": "20240127",
+        "current_version": "20240127",
         "failed": false
     },
     {
