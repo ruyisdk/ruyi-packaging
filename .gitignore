@@ -1,8 +1,7 @@
 *.pyc
-/db
+/cache
 
 .idea
 */.idea
-checker/test.py
-check_info.json
-report.md
+
+*/__pycache__
