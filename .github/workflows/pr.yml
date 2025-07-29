@@ -3,7 +3,7 @@ name: PR checks
 on:
   pull_request:
     branches:
-      - main
+      - checker
 
 jobs:
   dco:
