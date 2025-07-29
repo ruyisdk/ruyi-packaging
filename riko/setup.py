@@ -1,8 +1,10 @@
 import os
 import subprocess
+import tomli_w
 
 from .config.const import basedir, nvchecker_datadir, riko_datadir, ruyi_datadir, ruyi_cache_dir, ruyi_state_dir, \
-    ruyi_data_dir, ruyi_config_dir, ruyi_config, ruyi_config_extra
+    ruyi_data_dir, ruyi_config_dir, ruyi_config, ruyi_config_extra, nvchecker_config
+from .packages_index.upstream import upstreams
 from .rikoriko import setup_riko
 
 
@@ -88,5 +90,13 @@ def riko_setup() -> None:
 
     if not (ruyi_cache_dir / "ruyi" / "packages-index").exists():
         raise FileNotFoundError(ruyi_cache_dir / "ruyi" / "packages-index")
+
+    # nvchecker config
+    nvchecker_cfg: dict = {}
+    for c in upstreams:
+        nvchecker_cfg[c.name] = c.data
+
+    with open(nvchecker_config, "wb") as f:
+        tomli_w.dump(nvchecker_cfg, f)
 
     setup_riko()
