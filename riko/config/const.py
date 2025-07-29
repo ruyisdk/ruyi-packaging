@@ -13,6 +13,7 @@ data or cache files
 """
 
 nvchecker_datadir = datadir / 'nvchecker'
+nvchecker_config = nvchecker_datadir / "nvchecker.toml"
 """
 nvchecker files
 """
