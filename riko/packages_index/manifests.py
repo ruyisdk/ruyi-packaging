@@ -11,26 +11,35 @@ class PackageVersion:
 class Package:
 
     def __init__(self, name: str, versions=None):
-        self.versions: list[PackageVersion]
+        self._versions: list[PackageVersion]
         if versions is None:
-            self.versions = []
+            self._versions = []
         else:
-            self.versions = versions
+            self._versions = versions
         self.name: str = name
 
-    def new_version(self, version: PackageVersion):
-        self.versions.append(version)
+    def add_version(self, version: PackageVersion) -> None:
+        self._versions.append(version)
+
+    def get_versions(self) -> list[PackageVersion]:
+        return self._versions
 
 
 class Category:
 
     def __init__(self, name: str, packages=None):
-        self.packages: list[Package]
+        self._packages: dict[str, Package]
         if packages is None:
-            self.packages = []
+            self._packages = {}
         else:
-            self.packages = packages
-        self.name: str = name
+            self._packages = packages
+        self._name: str = name
 
-    def new_package(self, package: Package):
-        self.packages.append(package)
+    def add_package(self, package: Package) -> None:
+        self._packages.update({package.name: package})
+
+    def get_package(self, name: str) -> Package | None:
+        return self._packages.get(name)
+
+    def get_name(self) -> str:
+        return self._name

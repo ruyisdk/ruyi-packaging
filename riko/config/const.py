@@ -14,6 +14,10 @@ data or cache files
 
 nvchecker_datadir = datadir / 'nvchecker'
 nvchecker_config = nvchecker_datadir / "nvchecker.toml"
+nvchecker_result = nvchecker_datadir / "result.json"
+nvchecker_old_ver = nvchecker_datadir / "old_ver.json"
+nvchecker_new_ver = nvchecker_datadir / "new_ver.json"
+nvchecker_key = basedir / "config" / "nvchecker_keyfile.toml"
 """
 nvchecker files
 """
