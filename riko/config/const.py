@@ -1,13 +1,13 @@
 from pathlib import Path
 
-from config import config
+from .config import use_base_dir, use_ruyi_iscas_repo
 
-basedir = Path(__file__).resolve().parent.parent
+basedir = Path(__file__).resolve().parent.parent.parent
 """
 project directory
 """
 
-datadir = basedir / 'cache' if config.use_base_dir else Path('~/.cache/riko/').expanduser()
+datadir = basedir / 'cache' if use_base_dir else Path('~/.cache/riko/').expanduser()
 """
 data or cache files
 """
@@ -44,7 +44,7 @@ ruyi config toml file
 ruyi_config_extra = '''
 [repo]
 remote = "https://mirror.iscas.ac.cn/git/ruyisdk/packages-index.git"
-''' if config.use_ruyi_iscas_repo else ""
+''' if use_ruyi_iscas_repo else ""
 """
 ruyi extra config
 """

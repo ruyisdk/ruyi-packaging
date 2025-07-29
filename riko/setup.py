@@ -1,8 +1,9 @@
 import os
 import subprocess
 
-from .const import basedir, nvchecker_datadir, riko_datadir, ruyi_datadir, ruyi_cache_dir, ruyi_state_dir, \
+from .config.const import basedir, nvchecker_datadir, riko_datadir, ruyi_datadir, ruyi_cache_dir, ruyi_state_dir, \
     ruyi_data_dir, ruyi_config_dir, ruyi_config, ruyi_config_extra
+from .rikoriko import setup_riko
 
 
 def _ensure_dir(path: str) -> None:
@@ -58,7 +59,7 @@ def _ensure_envs() -> None:
     _ensure_ruyi_env()
 
 
-def setup() -> None:
+def riko_setup() -> None:
     """
     Sets up all
     :return:
@@ -66,7 +67,7 @@ def setup() -> None:
     _ensure_paths()
     _ensure_envs()
 
-    with open(ruyi_config_dir / 'ruyi/config.toml', "w") as cfg:
+    with open(ruyi_config_dir / "ruyi" / "config.toml", "w") as cfg:
         cfg.write(ruyi_config + "\n" + ruyi_config_extra)
 
     # ruyi update
@@ -84,3 +85,8 @@ def setup() -> None:
     ret = process.wait()
     if ret != 0:
         raise subprocess.CalledProcessError(ret, cmd, output)
+
+    if not (ruyi_cache_dir / "ruyi" / "packages-index").exists():
+        raise FileNotFoundError(ruyi_cache_dir / "ruyi" / "packages-index")
+
+    setup_riko()
