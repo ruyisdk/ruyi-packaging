@@ -1,5 +1,5 @@
 import json
-
+import logging
 import semver
 import tomli_w
 
@@ -7,6 +7,7 @@ from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_old_ver, n
 from .packages_index.api import PackagesIndex
 from .packages_index.upstream import Upstream, get_upstreams
 
+logger = logging.getLogger(__name__)
 
 class Riko:
 
@@ -19,7 +20,10 @@ class Riko:
         Start riko from local cache
         :return:
         """
-        self.packages_index.load()
+        try:
+            self.packages_index.load()
+        except FileNotFoundError:
+            logger.warning("Riko cache not found, please run `riko check` first")
 
     def generate_nvchecker_config(self) -> None:
         nvchecker_cfg: dict = {
