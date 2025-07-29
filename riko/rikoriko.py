@@ -73,7 +73,7 @@ class Riko:
         }
 
         with open(nvchecker_old_ver, "w") as f:
-            json.dump(format_data, f, indent=4)
+            json.dump(format_data, f, indent=2)
 
 
 _myriko: Riko | None = None

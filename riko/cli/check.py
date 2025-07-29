@@ -2,7 +2,7 @@
 Check latest and setup riko local cache
 """
 
-import argparse
+import json
 import logging
 import os
 import subprocess
@@ -118,6 +118,12 @@ def check() -> None:
     ret = process.wait()
     if ret != 0:
         raise subprocess.CalledProcessError(ret, cmd, output)
+
+    # format json file
+    with open(nvchecker_result, "r") as f:
+        output = f.read()
+    with open(nvchecker_result, "w") as f:
+        json.dump(json.loads(output), f, indent=2)
 
     if not nvchecker_result.exists():
         raise FileNotFoundError(nvchecker_result)
