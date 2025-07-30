@@ -32,6 +32,10 @@ ruyi_data_dir = ruyi_datadir / 'local'
 ruyi_cache_dir = ruyi_datadir / 'cache'
 ruyi_state_dir = ruyi_datadir / 'state'
 
+ruyi_pkgs_dir = basedir / "ruyi_packages"
+"""
+upstream data etc.
+"""
 
 riko_datadir = datadir / 'riko'
 """
