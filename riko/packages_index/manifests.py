@@ -1,17 +1,19 @@
 import semver
 
+from typing import Dict, List
+
 class PackageVersion:
 
-    def __init__(self, version: semver.Version, upstream_version: str, data: dict):
+    def __init__(self, version: semver.Version, upstream_version: str, data: Dict):
         self.version: semver.Version = version
         self.upstream_version: str = upstream_version
-        self.data: dict = data
+        self.data: Dict = data
 
 
 class Package:
 
     def __init__(self, name: str, versions=None):
-        self._versions: list[PackageVersion]
+        self._versions: List[PackageVersion]
         if versions is None:
             self._versions = []
         else:
@@ -21,14 +23,14 @@ class Package:
     def add_version(self, version: PackageVersion) -> None:
         self._versions.append(version)
 
-    def get_versions(self) -> list[PackageVersion]:
+    def get_versions(self) -> List[PackageVersion]:
         return self._versions
 
 
 class Category:
 
     def __init__(self, name: str, packages=None):
-        self._packages: dict[str, Package]
+        self._packages: Dict[str, Package]
         if packages is None:
             self._packages = {}
         else:

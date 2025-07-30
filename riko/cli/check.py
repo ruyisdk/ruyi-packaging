@@ -7,6 +7,8 @@ import logging
 import os
 import subprocess
 
+from typing import Dict, List
+
 from ..config.const import basedir, nvchecker_datadir, riko_datadir, ruyi_datadir, ruyi_cache_dir, ruyi_state_dir, \
     ruyi_data_dir, ruyi_config_dir, ruyi_config, ruyi_config_extra, nvchecker_config, nvchecker_result, nvchecker_key
 from ..rikoriko import get_riko
@@ -46,11 +48,11 @@ def _ensure_paths() -> None:
     _ensure_ruyi_path()
 
 
-def _ensure_nvchecker_env(env: dict) -> None:
+def _ensure_nvchecker_env(env: Dict) -> None:
     env['PYTHONPATH'] = str(basedir)
 
 
-def _ensure_ruyi_env(env: dict) -> None:
+def _ensure_ruyi_env(env: Dict) -> None:
     env['XDG_CONFIG_HOME'] = str(ruyi_config_dir)
     env['XDG_DATA_HOME'] = str(ruyi_data_dir)
     env['XDG_CACHE_HOME'] = str(ruyi_cache_dir)
@@ -69,7 +71,7 @@ def check() -> None:
 
     # ruyi update
     logger.warning("run `ruyi update`")
-    cmd: list[str] = ["ruyi", "update"]
+    cmd: List[str] = ["ruyi", "update"]
     env = os.environ.copy()
     rfd, wfd = os.pipe()
 
@@ -96,7 +98,7 @@ def check() -> None:
     # run nvchecker
     logger.warning("run `nvchecker`")
     rfd, wfd = os.pipe()
-    cmd: list[str] = ["nvchecker", "--logger", "both", "--json-log-fd", str(wfd), "-c", nvchecker_config]
+    cmd: List[str] = ["nvchecker", "--logger", "both", "--json-log-fd", str(wfd), "-c", nvchecker_config]
     env = os.environ.copy()
     _ensure_nvchecker_env(env)
 

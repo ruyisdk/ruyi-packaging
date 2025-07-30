@@ -27,7 +27,7 @@ if __name__ == '__main__':
                            choices=["any", "updated", "up-to-date", "no-result", "debug", "info", "error"])
     subparser.set_defaults(func=lambda args: list_result(args.event))
 
-    subparser = subparsers.add_parser("manifests", help="Generate packages-index manifests")
+    subparser = subparsers.add_parser("manifests", help="Generate new packages-index manifests from old ones")
     subparser.add_argument("up_name", type=str, help="upstream name")
     subparser.add_argument("gen_vers", nargs="+", help="new versions")
     subparser.set_defaults(func=lambda args: manifests(args.up_name, args.gen_ver))

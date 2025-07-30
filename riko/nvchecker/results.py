@@ -2,6 +2,7 @@ import json
 import os
 
 from pathlib import Path
+from typing import Dict, List
 
 class NvcheckerResults:
     """
@@ -9,7 +10,7 @@ class NvcheckerResults:
     """
     def __init__(self, path: Path):
         self._path: Path = path
-        self._data: list[dict] = []
+        self._data: List[Dict] = []
 
     def load(self) -> None:
         if not os.path.exists(self._path):
@@ -18,10 +19,10 @@ class NvcheckerResults:
         with open(self._path) as f:
             self._data = json.load(f)
 
-    def get_data(self) -> list[dict]:
+    def get_data(self) -> List[Dict]:
         return self._data
 
-    def get_event_data(self, event_or_level: str) -> list[dict]:
+    def get_event_data(self, event_or_level: str) -> List[Dict]:
         """
         check event or level
         :param event_or_level:

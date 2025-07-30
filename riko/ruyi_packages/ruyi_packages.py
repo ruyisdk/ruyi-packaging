@@ -3,9 +3,10 @@ import os
 import tomllib
 
 from pathlib import Path
+from typing import Dict, List
 
 class Upstream:
-    def __init__(self, name: str, category: str, data: dict):
+    def __init__(self, name: str, category: str, data: Dict):
         """
         describe upstream of a set of manifests
         :param name: the name of the upstream
@@ -14,11 +15,11 @@ class Upstream:
         # nvchecker config
         self._name: str = name
         self._category: str = category
-        self._data: dict = data
+        self._data: Dict = data
 
         # empty combos
-        self._combos: list[str] = []
-        self._match: dict[str, str] = {}
+        self._combos: List[str] = []
+        self._match: Dict[str, str] = {}
 
     def get_name(self) -> str:
         return self._name
@@ -26,10 +27,10 @@ class Upstream:
     def get_category(self) -> str:
         return self._category
 
-    def get_data(self) -> dict:
+    def get_data(self) -> Dict:
         return self._data
 
-    def set_combos(self, combos: list[str], match: dict[str, str]) -> None:
+    def set_combos(self, combos: List[str], match: Dict[str, str]) -> None:
         """
         set board-image combos
         :param combos: a set of manifests(board-images), they release in same source and should be checked together
@@ -39,10 +40,10 @@ class Upstream:
         self._combos = combos
         self._match = match
 
-    def get_combos(self) -> list[str]:
+    def get_combos(self) -> List[str]:
         return self._combos
 
-    def get_match(self) -> dict[str, str]:
+    def get_match(self) -> Dict[str, str]:
         return self._match
 
 
@@ -50,7 +51,7 @@ class RuyiPackages:
 
     def __init__(self, path: Path):
         self._path: Path = path
-        self._upstream: list[Upstream] = []
+        self._upstream: List[Upstream] = []
 
     def load(self):
         if not self._path.exists():
@@ -60,7 +61,7 @@ class RuyiPackages:
             for pkg in os.listdir(self._path / cat):
 
                 with open(self._path / cat / pkg / "riko.toml", "rb") as f:
-                    cfg: dict = tomllib.load(f)
+                    cfg: Dict = tomllib.load(f)
 
                 up = Upstream(pkg, cat, cfg["nvchecker"])
                 if cat != "board-image":
@@ -81,5 +82,5 @@ class RuyiPackages:
 
                 self._upstream.append(up)
 
-    def get_upstreams(self) -> list[Upstream]:
+    def get_upstreams(self) -> List[Upstream]:
         return self._upstream
