@@ -1,0 +1,9 @@
+[nvchecker]
+source = "github"
+github = "Fishwaldo/sophgo-sg200x-debian"
+use_latest_release = true
+
+[entities]
+image-combo = [
+    "debian-fishwaldo-sg200x-sipeed-licheervnano",
+]

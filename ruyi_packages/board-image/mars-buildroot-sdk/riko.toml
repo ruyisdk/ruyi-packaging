@@ -1,0 +1,10 @@
+[nvchecker]
+source = "github"
+github = "milkv-mars/mars-buildroot-sdk"
+use_latest_release = true
+
+[entities]
+image-combo = [
+    "debian-desktop-sdk-milkv-mars-sd",
+    "debian-desktop-sdk-milkv-mars-cm-sd",
+]

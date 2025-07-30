@@ -3,10 +3,11 @@ import logging
 import semver
 import tomli_w
 
-from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_result, nvchecker_old_ver, nvchecker_new_ver
-from .packages_index.packages_index import PackagesIndex
-from .packages_index.upstream import Upstream, get_upstreams
+from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_result, nvchecker_old_ver, nvchecker_new_ver, \
+    ruyi_pkgs_dir
 from .nvchecker.results import NvcheckerResults
+from .packages_index.packages_index import PackagesIndex
+from .ruyi_packages.ruyi_packages import RuyiPackages
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,7 @@ class Riko:
 
     def __init__(self):
         self.packages_index: PackagesIndex = PackagesIndex(ruyi_cache_dir / "ruyi" / "packages-index")
-        self.upstreams: list[Upstream] = get_upstreams()
+        self.ruyi_packages: RuyiPackages = RuyiPackages(ruyi_pkgs_dir)
         self.nvchecker_result: NvcheckerResults = NvcheckerResults(nvchecker_result)
 
     def load_from_cache(self) -> None:
@@ -23,6 +24,7 @@ class Riko:
         :return:
         """
         try:
+            self.ruyi_packages.load()
             self.packages_index.load()
             self.nvchecker_result.load()
         except FileNotFoundError:
@@ -35,7 +37,7 @@ class Riko:
                 "newver": str(nvchecker_new_ver.name),
             }
         }
-        for c in self.upstreams:
+        for c in self.ruyi_packages.get_upstreams():
             nvchecker_cfg[c.get_name()] = c.get_data()
 
         with open(nvchecker_config, "wb") as f:
@@ -51,7 +53,7 @@ class Riko:
         nvchecker_ver = 2
         old_data = {}
 
-        for up in self.upstreams:
+        for up in self.ruyi_packages.get_upstreams():
             name = up.get_name()
             cat = self.packages_index.get_category(up.get_category())
 
