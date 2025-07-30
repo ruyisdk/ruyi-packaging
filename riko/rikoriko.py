@@ -4,7 +4,7 @@ import semver
 import tomli_w
 
 from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_old_ver, nvchecker_new_ver
-from .packages_index.api import PackagesIndex
+from .packages_index.packages_index import PackagesIndex
 from .packages_index.upstream import Upstream, get_upstreams
 
 logger = logging.getLogger(__name__)

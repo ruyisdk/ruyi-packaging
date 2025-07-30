@@ -3,8 +3,10 @@
 import argparse
 import sys
 
+from riko.cli.check import check
+from riko.cli.manifests import manifests
 from riko.rikoriko import get_riko
-from riko.cli.action import ActionRiko
+
 
 if __name__ == '__main__':
 
@@ -14,9 +16,18 @@ if __name__ == '__main__':
     myriko.load_from_cache()
 
     parser = argparse.ArgumentParser(prog="riko", description="Riko: the Ruyi Packaging Bot")
-    parser.add_argument("action", type=str, choices=["check"], action=ActionRiko, help="riko action")
+    subparsers = parser.add_subparsers(dest="subcommand", help="sub-commands")
 
-    if "-h" in sys.argv or "--help" in sys.argv or len(sys.argv) > 2:
+    subparser = subparsers.add_parser("check", help="Fetch data and refresh local cache")
+    subparser.set_defaults(func=lambda args: check())
+
+    subparser = subparsers.add_parser("manifests", help="Generate packages-index manifest")
+    subparser.add_argument("up_name", type=str, help="upstream name")
+    subparser.add_argument("gen_vers", nargs="+", help="new versions")
+    subparser.set_defaults(func=lambda args: manifests(args.up_name, args.gen_ver))
+
+    if len(sys.argv) == 1:
         parser.print_help()
     else:
-        parser.parse_args()
+        myfunc = parser.parse_args()
+        myfunc.func(myfunc)
