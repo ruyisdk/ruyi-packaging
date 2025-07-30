@@ -5,6 +5,8 @@ List nvchecker results
 import json
 import sys
 
+from typing import Dict, List
+
 from ..rikoriko import get_riko
 
 def list_result(event: str) -> None:
@@ -14,6 +16,6 @@ def list_result(event: str) -> None:
     or "level" {debug, info, error}, or {any}
     :return:
     """
-    res: list[dict] = get_riko().get_nvchecker_results(event)
+    res: List[Dict] = get_riko().get_nvchecker_results(event)
 
     json.dump(res, sys.stdout, indent=2, sort_keys=False)

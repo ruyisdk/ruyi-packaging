@@ -3,6 +3,7 @@ import semver
 import tomllib
 
 from pathlib import Path
+from typing import Dict, List
 
 from .manifests import Category, Package, PackageVersion
 
@@ -10,7 +11,7 @@ class PackagesIndex:
 
     def __init__(self, path: Path):
         self._path: Path = path
-        self._categories: dict[str, Category] = {}
+        self._categories: Dict[str, Category] = {}
 
     def load(self) -> None:
 
