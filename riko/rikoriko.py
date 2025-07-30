@@ -3,9 +3,10 @@ import logging
 import semver
 import tomli_w
 
-from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_old_ver, nvchecker_new_ver
+from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_result, nvchecker_old_ver, nvchecker_new_ver
 from .packages_index.packages_index import PackagesIndex
 from .packages_index.upstream import Upstream, get_upstreams
+from .nvchecker.results import NvcheckerResults
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ class Riko:
     def __init__(self):
         self.packages_index: PackagesIndex = PackagesIndex(ruyi_cache_dir / "ruyi" / "packages-index")
         self.upstreams: list[Upstream] = get_upstreams()
+        self.nvchecker_result: NvcheckerResults = NvcheckerResults(nvchecker_result)
 
     def load_from_cache(self) -> None:
         """
@@ -22,6 +24,7 @@ class Riko:
         """
         try:
             self.packages_index.load()
+            self.nvchecker_result.load()
         except FileNotFoundError:
             logger.warning("Riko cache not found, please run `riko check` first")
 
@@ -74,6 +77,12 @@ class Riko:
 
         with open(nvchecker_old_ver, "w") as f:
             json.dump(format_data, f, indent=2)
+
+    def get_nvchecker_results(self, event_or_level: str) -> list[dict]:
+        if event_or_level == "any":
+            return self.nvchecker_result.get_data()
+        else:
+            return self.nvchecker_result.get_event_data(event_or_level)
 
 
 _myriko: Riko | None = None
