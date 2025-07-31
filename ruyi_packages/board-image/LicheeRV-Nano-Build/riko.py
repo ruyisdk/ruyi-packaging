@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from riko.api import RikoPkg, GithubUpstream
 
@@ -12,6 +12,7 @@ def rikoring(old_pkgs: List[RikoPkg], new_pkgs: List[RikoPkg]) -> None:
     """
 
     # First, get new toml, some items such as upstream_version will automatically set.
+    # NOTE that `old_pkgs` is read only, do not modify it to prevent unexpected result
     # Note that this package only has one combo
     new_toml: Dict = new_pkgs[0].get_manifest()[0]
     upstream: GithubUpstream = new_pkgs[0].get_upstream()
@@ -19,16 +20,27 @@ def rikoring(old_pkgs: List[RikoPkg], new_pkgs: List[RikoPkg]) -> None:
 
     assert upstream.source == "github"
 
-    # Second, edit metadata.desc
+    # Second, generate new version
+    new_ver = old_pkgs[0].get_version().replace(minor=upstream_version, patch=0)
+    new_pkgs[0].version = new_ver
+
+    # Third, edit metadata.desc
     new_toml["metadata"]["desc"] = (
         new_toml["metadata"]["desc"].replace(old_pkgs[0].get_upstream_version(), new_pkgs[0].get_upstream_version()))
 
-    # Third, get file
+    # Fourth, get file
     assets = upstream.get_release_asserts(upstream_version)
+    files: List[Tuple[str, str]] = []
+    for asset in assets:
+        files.append((asset.name, asset.browser_download_url))
+
+    assert len(files) == 1
+    new_toml["blob"]["distfiles"] = [files[0][0], ]
+    new_toml["distfiles"][0]["name"] = files[0][0]
+    new_toml["distfiles"][0]["urls"] = [files[0][1], ]
 
     # finally, set flag to ask riko package new one
     new_pkgs[0].set_manifest_ready()
-    # or, new_pkgs[0].set_manifest(new_toml)
 
 
 """

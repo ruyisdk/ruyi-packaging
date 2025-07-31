@@ -9,6 +9,7 @@ import subprocess
 
 from typing import Dict, List
 
+from .utils import ensure_dir
 from ..config.const import basedir, nvchecker_datadir, riko_datadir, ruyi_datadir, ruyi_cache_dir, ruyi_state_dir, \
     ruyi_data_dir, ruyi_config_dir, ruyi_config, ruyi_config_extra, nvchecker_config, nvchecker_result, nvchecker_key
 from ..rikoriko import get_riko
@@ -16,26 +17,21 @@ from ..rikoriko import get_riko
 logger = logging.getLogger(__name__)
 
 
-def _ensure_dir(path: str) -> None:
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-
 def _ensure_riko_path() -> None:
-    _ensure_dir(riko_datadir)
+    ensure_dir(riko_datadir)
 
 
 def _ensure_nvchecker_path() -> None:
-    _ensure_dir(nvchecker_datadir)
+    ensure_dir(nvchecker_datadir)
 
 
 def _ensure_ruyi_path() -> None:
-    _ensure_dir(ruyi_datadir)
-    _ensure_dir(ruyi_config_dir)
-    _ensure_dir(ruyi_config_dir / 'ruyi')
-    _ensure_dir(ruyi_data_dir)
-    _ensure_dir(ruyi_cache_dir)
-    _ensure_dir(ruyi_state_dir)
+    ensure_dir(ruyi_datadir)
+    ensure_dir(ruyi_config_dir)
+    ensure_dir(ruyi_config_dir / 'ruyi')
+    ensure_dir(ruyi_data_dir)
+    ensure_dir(ruyi_cache_dir)
+    ensure_dir(ruyi_state_dir)
 
 
 def _ensure_paths() -> None:
@@ -70,7 +66,7 @@ def check() -> None:
         cfg.write(ruyi_config + "\n" + ruyi_config_extra)
 
     # ruyi update
-    logger.warning("run `ruyi update`")
+    logger.info("run `ruyi update`")
     cmd: List[str] = ["ruyi", "update"]
     env = os.environ.copy()
     rfd, wfd = os.pipe()
@@ -91,12 +87,12 @@ def check() -> None:
         raise FileNotFoundError(ruyi_cache_dir / "ruyi" / "packages-index")
 
     # nvchecker config/old_ver
-    logger.warning("prepare for `nvchecker`")
+    logger.info("prepare for `nvchecker`")
     get_riko().generate_nvchecker_config()
     get_riko().generate_nvchecker_old_ver()
 
     # run nvchecker
-    logger.warning("run `nvchecker`")
+    logger.info("run `nvchecker`")
     rfd, wfd = os.pipe()
     cmd: List[str] = ["nvchecker", "--logger", "both", "--json-log-fd", str(wfd), "-c", nvchecker_config]
     env = os.environ.copy()

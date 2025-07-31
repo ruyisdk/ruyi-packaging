@@ -7,16 +7,17 @@ from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_result, nv
     ruyi_pkgs_dir
 from .nvchecker.results import NvcheckerResults
 from .packages_index.packages_index import PackagesIndex
-from .ruyi_packages.ruyi_packages import RuyiPackages
+from .packages_index.manifests import PackageVersion
+from .ruyi_packages.ruyi_packages import RuyiPackages, UpstreamConfig
 
 logger = logging.getLogger(__name__)
 
 class Riko:
 
     def __init__(self):
-        self.packages_index: PackagesIndex = PackagesIndex(ruyi_cache_dir / "ruyi" / "packages-index")
-        self.ruyi_packages: RuyiPackages = RuyiPackages(ruyi_pkgs_dir)
-        self.nvchecker_result: NvcheckerResults = NvcheckerResults(nvchecker_result)
+        self._packages_index: PackagesIndex = PackagesIndex(ruyi_cache_dir / "ruyi" / "packages-index")
+        self._ruyi_packages: RuyiPackages = RuyiPackages(ruyi_pkgs_dir)
+        self._nvchecker_result: NvcheckerResults = NvcheckerResults(nvchecker_result)
 
     def load_from_cache(self) -> None:
         """
@@ -24,9 +25,9 @@ class Riko:
         :return:
         """
         try:
-            self.ruyi_packages.load()
-            self.packages_index.load()
-            self.nvchecker_result.load()
+            self._ruyi_packages.load()
+            self._packages_index.load()
+            self._nvchecker_result.load()
         except FileNotFoundError:
             logger.warning("Riko cache not found, please run `riko check` first")
 
@@ -37,8 +38,8 @@ class Riko:
                 "newver": str(nvchecker_new_ver.name),
             }
         }
-        for c in self.ruyi_packages.get_upstreams():
-            nvchecker_cfg[c.get_name()] = c.get_data()
+        for c in self._ruyi_packages.get_upstreams().values():
+            nvchecker_cfg[c.get_name()] = c.get_nvchecker_dat()
 
         with open(nvchecker_config, "wb") as f:
             tomli_w.dump(nvchecker_cfg, f)
@@ -48,14 +49,14 @@ class Riko:
         Generate old_ver.json from packages-index for nvchecker on cli.check
         :return:
         """
-        self.packages_index.load()
+        self._packages_index.load()
 
         nvchecker_ver = 2
         old_data = {}
 
-        for up in self.ruyi_packages.get_upstreams():
+        for up in self._ruyi_packages.get_upstreams().values():
             name = up.get_name()
-            cat = self.packages_index.get_category(up.get_category())
+            cat = self._packages_index.get_category(up.get_category())
 
             # find latest version among all combos
             version = semver.Version(0, 0, 0)
@@ -82,9 +83,25 @@ class Riko:
 
     def get_nvchecker_results(self, event_or_level: str) -> list[dict]:
         if event_or_level == "any":
-            return self.nvchecker_result.get_data()
+            return self._nvchecker_result.get_data()
         else:
-            return self.nvchecker_result.get_event_data(event_or_level)
+            return self._nvchecker_result.get_event_data(event_or_level)
+
+    def get_packages_index(self) -> PackagesIndex:
+        return self._packages_index
+
+    def get_packages_index_manifest(self, category: str, pkg: str, up_ver: str) -> PackageVersion | None:
+        for v in self._packages_index.get_category(category).get_package(pkg).get_versions():
+            if v.upstream_version == up_ver:
+                return v
+
+        return None
+
+    def get_ruyi_packages(self) -> RuyiPackages:
+        return self._ruyi_packages
+
+    def get_ruyi_package(self, up_name: str) -> UpstreamConfig | None:
+        return self._ruyi_packages.get_upstream(up_name)
 
 
 _myriko: Riko | None = None

@@ -5,8 +5,8 @@ import tomllib
 from pathlib import Path
 from typing import Dict, List
 
-class Upstream:
-    def __init__(self, name: str, category: str, data: Dict):
+class UpstreamConfig:
+    def __init__(self, name: str, category: str, nv_dat: Dict):
         """
         describe upstream of a set of manifests
         :param name: the name of the upstream
@@ -15,7 +15,7 @@ class Upstream:
         # nvchecker config
         self._name: str = name
         self._category: str = category
-        self._data: Dict = data
+        self._nv_data: Dict = nv_dat
 
         # empty combos
         self._combos: List[str] = []
@@ -27,8 +27,8 @@ class Upstream:
     def get_category(self) -> str:
         return self._category
 
-    def get_data(self) -> Dict:
-        return self._data
+    def get_nvchecker_dat(self) -> Dict:
+        return self._nv_data
 
     def set_combos(self, combos: List[str], match: Dict[str, str]) -> None:
         """
@@ -51,7 +51,7 @@ class RuyiPackages:
 
     def __init__(self, path: Path):
         self._path: Path = path
-        self._upstream: List[Upstream] = []
+        self._upstream_cfg: Dict[str, UpstreamConfig] = {}
 
     def load(self):
         if not self._path.exists():
@@ -63,7 +63,7 @@ class RuyiPackages:
                 with open(self._path / cat / pkg / "riko.toml", "rb") as f:
                     cfg: Dict = tomllib.load(f)
 
-                up = Upstream(pkg, cat, cfg["nvchecker"])
+                up = UpstreamConfig(pkg, cat, cfg["nvchecker"])
                 if cat != "board-image":
                     raise NotImplementedError(f"Category {cat} not implemented")
 
@@ -80,7 +80,10 @@ class RuyiPackages:
 
                 up.set_combos(combos, match)
 
-                self._upstream.append(up)
+                self._upstream_cfg[pkg] = up
 
-    def get_upstreams(self) -> List[Upstream]:
-        return self._upstream
+    def get_upstreams(self) -> Dict[str, UpstreamConfig]:
+        return self._upstream_cfg
+
+    def get_upstream(self, up_name: str) -> UpstreamConfig | None:
+        return self._upstream_cfg.get(up_name)
