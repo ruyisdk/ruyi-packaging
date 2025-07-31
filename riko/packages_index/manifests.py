@@ -4,10 +4,22 @@ from typing import Dict, List
 
 class PackageVersion:
 
-    def __init__(self, version: semver.Version, upstream_version: str, data: Dict):
+    def __init__(self, version: semver.Version, upstream_version: str, manifest: Dict):
         self.version: semver.Version = version
         self.upstream_version: str = upstream_version
-        self.data: Dict = data
+        self.manifest: Dict = manifest
+
+    def set_manifest(self, manifest: Dict):
+        self.manifest = manifest
+
+    def get_manifest(self) -> Dict:
+        return self.manifest
+
+    def get_version(self) -> semver.Version:
+        return self.version
+
+    def get_upstream_version(self) -> str:
+        return self.upstream_version
 
 
 class Package:

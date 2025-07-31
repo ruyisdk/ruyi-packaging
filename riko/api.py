@@ -2,36 +2,50 @@ import semver
 
 from typing import Dict, Tuple, Union
 
+from .packages_index.manifests import PackageVersion
 from .upstreams.github import GithubUpstream
 
 __all__ = ("RikoPkg", "GithubUpstream", )
 _UpstreamLike = Union[GithubUpstream]
 
 
-class RikoPkg:
-    def __init__(self, version: semver.Version, upstream_version: str, upstream: _UpstreamLike) -> None:
-        self._version = version
-        self._upstream_version = upstream_version
-        self._manifest: Dict = {}
-        self._manifest_ready: bool = False
+class RikoPkg(PackageVersion):
+    def __init__(self, category: str, combo: str, up_name: str,
+                 version: semver.Version, upstream_version: str, upstream: _UpstreamLike = None) -> None:
+        super().__init__(version, upstream_version, {})
+
+        self._category: str = category
+        self._combo: str = combo
+
+        self._upstream_name: str = up_name
 
         self._upstream: _UpstreamLike = upstream
 
+        self._manifest_ready: bool = False
+
     def set_manifest(self, manifest: Dict) -> None:
-        self._manifest = manifest
-        self._manifest_ready = True
+        super().set_manifest(manifest)
 
     def set_manifest_ready(self) -> None:
         self._manifest_ready = True
 
+    def get_category(self) -> str:
+        return self._category
+
+    def get_combo(self) -> str:
+        return self._combo
+
     def get_manifest(self) -> Tuple[Dict, bool]:
-        return self._manifest, self._manifest_ready
+        return super().get_manifest(), self._manifest_ready
 
     def get_version(self) -> semver.Version:
-        return self._version
+        return super().get_version()
 
     def get_upstream_version(self) -> str:
-        return self._upstream_version
+        return super().get_upstream_version()
 
-    def get_upstream(self) -> _UpstreamLike:
+    def get_upstream(self) -> _UpstreamLike | None:
         return self._upstream
+
+    def get_upstream_name(self) -> str:
+        return self._upstream_name

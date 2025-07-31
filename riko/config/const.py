@@ -38,6 +38,8 @@ upstream data etc.
 """
 
 riko_datadir = datadir / 'riko'
+riko_cache_dir = riko_datadir / 'cache'
+riko_manifests_dir = riko_datadir / 'manifests'
 """
 riko files
 """
