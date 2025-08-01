@@ -139,6 +139,27 @@ def manifests(up_name: str, gen_vers: list[str]):
                 # automatically set new values
                 # after rikoring
 
+                # assign disk partition map for dd_v1
+                tp = ma["provisionable"]["strategy"]
+                if tp == "dd-v1":
+                    ma["provisionable"]["partition_map"]["disk"] = ma["blob"]["distfiles"][0]
+
+                # unpack package
+                # See: https://github.com/ruyisdk/ruyi/blob/main/ruyi/ruyipkg/unpack_method.py
+                tars = [".tar.gz", ".tar.bz2", ".tar.lz4", ".tar.xz", ".tar.zst", ".gz", ".bz2", ".lz4", ".xz", ".zst", ".zip"]
+                for tar in tars:
+                    if tp == "dd-v1":
+                        if ma["provisionable"]["partition_map"]["disk"].endswith(tar):
+                            ma["provisionable"]["partition_map"]["disk"] = ma["provisionable"]["partition_map"]["disk"][:-len(tar)]
+                    elif tp == "fastboot-v1":
+                        if ma["provisionable"]["partition_map"]["boot"].endswith(tar):
+                            ma["provisionable"]["partition_map"]["boot"] = ma["provisionable"]["partition_map"]["boot"][:-len(tar)]
+                        if ma["provisionable"]["partition_map"]["root"].endswith(tar):
+                            ma["provisionable"]["partition_map"]["boot"] = ma["provisionable"]["partition_map"]["boot"][:-len(tar)]
+                    elif tp == "fastboot-v1(lpi4a-uboot)":
+                        if ma["provisionable"]["partition_map"]["uboot"].endswith(tar):
+                            ma["provisionable"]["partition_map"]["uboot"] = ma["provisionable"]["partition_map"]["uboot"][:-len(tar)]
+
                 # TODO:
 
                 # write toml

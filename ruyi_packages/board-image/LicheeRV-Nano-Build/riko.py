@@ -73,8 +73,10 @@ distfiles = [                                                   # should be manu
 ]
 
 [provisionable]
-strategy = "dd_v1"                                              # do not edit
+strategy = "dd-v1"                                              # do not edit
 
 [provisionable.partition_map]
-disk = "2025-03-19-15-13-e4e133.img"                            # automatically set after packaging()
+disk = "2025-03-19-15-13-e4e133.img"                            # for `dd-v1` automatically set after packaging()
+                                                                # for fastboot, you should manually set, riko only
+                                                                #   helps you remove the {tar.xz,gz,etc.} suffix
 """
