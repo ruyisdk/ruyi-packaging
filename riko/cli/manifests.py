@@ -1,6 +1,9 @@
 
+import hashlib
 import importlib.util
 import logging
+import os
+import subprocess
 import traceback
 
 from typing import Dict, List
@@ -53,7 +56,7 @@ def manifests(up_name: str, gen_vers: list[str]):
         gen_vers.remove(old_ver)
 
     if len(gen_vers) == 0:
-        logger.warning(f"No version to be generated")
+        logger.warning("No version to be generated")
         return
 
     # load config
@@ -160,7 +163,36 @@ def manifests(up_name: str, gen_vers: list[str]):
                         if ma["provisionable"]["partition_map"]["uboot"].endswith(tar):
                             ma["provisionable"]["partition_map"]["uboot"] = ma["provisionable"]["partition_map"]["uboot"][:-len(tar)]
 
-                # TODO:
+                # download files
+                for i in range(0, len(ma["distfiles"])):
+                    url: str = ma["distfiles"][i]["urls"][0]
+                    f_loc: str = riko_cache_dir / "curl.cache"
+                    cmd: List[str] = ["curl", "-L", url, "-o", str(f_loc), ]
+                    env = os.environ.copy()
+
+                    process = subprocess.Popen(cmd, env=env)
+                    ret = process.wait()
+                    if ret != 0:
+                        raise subprocess.CalledProcessError(ret, cmd)
+
+                    # get size
+                    ma["distfiles"][i]["size"] = os.path.getsize(f_loc)
+
+                    # calculate hash
+                    sha256 = hashlib.sha256()
+                    sha512 = hashlib.sha512()
+
+                    with open(f_loc, "rb") as f:
+                        while True:
+                            c = f.read(4 * 1024)
+                            if not c:
+                                break
+
+                            sha256.update(c)
+                            sha512.update(c)
+
+                    ma["distfiles"][i]["checksums"]["sha256"] = sha256.hexdigest()
+                    ma["distfiles"][i]["checksums"]["sha512"] = sha512.hexdigest()
 
                 # write toml
                 ensure_dir(riko_manifests_dir / nv.get_category())
@@ -169,5 +201,13 @@ def manifests(up_name: str, gen_vers: list[str]):
                 new_toml = riko_manifests_dir / nv.get_category() / nv.get_combo() / f"{str(nv.get_version())}.toml"
                 with open(new_toml, "wb") as nt:
                     tomli_w.dump(ma, nt)
+
+                cmd: List[str] = ["ruyi", "admin", "format-manifest", new_toml, ]
+                env = os.environ.copy()
+
+                process = subprocess.Popen(cmd, env=env)
+                ret = process.wait()
+                if ret != 0:
+                    raise subprocess.CalledProcessError(ret, cmd)
             else:
                 continue

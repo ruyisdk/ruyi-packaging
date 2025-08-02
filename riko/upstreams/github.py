@@ -14,7 +14,7 @@ class GithubUpstream(Upstream):
 
         if nvchecker_key.exists() and nvchecker_key.is_file():
             with open(nvchecker_key, "rb") as kf:
-                key = tomllib.load(kf).get("key")
+                key = tomllib.load(kf).get("keys")
                 if key is not None:
                     key = key.get("github")
 
