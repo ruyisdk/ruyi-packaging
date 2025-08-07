@@ -1,23 +1,5 @@
 [
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
-        "result": "v2.0.1",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
-        "result": "v1.1.4",
-        "current_version": "Duo-V1.0.7",
-        "failed": false
-    },
-    {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
-        "result": "v2.0.1",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
         "name": "ruyi",
         "result": "0.39.0-alpha.20250731",
         "current_version": "",
@@ -30,9 +12,21 @@
         "failed": false
     },
     {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
+        "result": "v1.1.4",
+        "current_version": "Duo-V1.0.7",
+        "failed": false
+    },
+    {
         "name": "buildroot  for LicheeRV Nano with version 20250319",
         "result": "20250804",
         "current_version": "20250319",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
+        "result": "v2.0.1",
+        "current_version": "v2.0.0",
         "failed": false
     },
     {
@@ -42,8 +36,14 @@
         "failed": false
     },
     {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) milkv-duo256m-musl-riscv64-sd_v2.0.0.img.zip",
+        "result": "v2.0.1",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
         "name": "Armbian 25.2.0-trunk.86 image for Pine64 Star64",
-        "result": "25.8.0-trunk.411",
+        "result": "25.8.0-trunk.475",
         "current_version": "25.2.0-trunk.86",
         "failed": false
     },
@@ -66,9 +66,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20241230 image for Milk-V Pioneer Box with SG2042",
-        "result": "20250703",
-        "current_version": "20241230",
+        "name": "Official OpenWRT 23.05.2 image for SiFive Unmatched",
+        "result": "24.10.2",
+        "current_version": "23.05.2",
         "failed": false
     },
     {
@@ -96,9 +96,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
-        "result": "20240606",
-        "current_version": "20240319",
+        "name": "RevyOS 20241230 image for Milk-V Pioneer Box with SG2042",
+        "result": "20250703",
+        "current_version": "20241230",
         "failed": false
     },
     {
@@ -108,9 +108,9 @@
         "failed": false
     },
     {
-        "name": "Official OpenWRT 23.05.2 image for SiFive Unmatched",
-        "result": "24.10.2",
-        "current_version": "23.05.2",
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "result": "20240606",
+        "current_version": "20240319",
         "failed": false
     },
     {
@@ -144,15 +144,15 @@
         "failed": false
     },
     {
-        "name": "U-Boot image for Milk-V Meles (16G RAM) and RevyOS 20250323",
-        "result": "20250729",
-        "current_version": "20250323",
-        "failed": false
-    },
-    {
         "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
         "result": "20250729",
         "current_version": "20250420",
+        "failed": false
+    },
+    {
+        "name": "U-Boot image for Milk-V Meles (16G RAM) and RevyOS 20250323",
+        "result": "20250729",
+        "current_version": "20250323",
         "failed": false
     },
     {
