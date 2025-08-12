@@ -1,4 +1,5 @@
 
+import copy
 import hashlib
 import importlib.util
 import logging
@@ -106,7 +107,7 @@ def manifests(up_name: str, gen_vers: list[str]):
 
             # automatically set new values
             # before rikoring
-            ma_cp = vers[i].manifest.copy()
+            ma_cp = copy.deepcopy(vers[i].manifest)
             ma_cp["metadata"]["upstream_version"] = gv
             pkg.set_manifest(ma_cp)
 
