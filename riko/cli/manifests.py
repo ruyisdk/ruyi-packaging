@@ -143,10 +143,12 @@ def manifests(up_name: str, gen_vers: list[str]):
                 # automatically set new values
                 # after rikoring
 
-                # assign disk partition map for dd_v1
+                # assign disk partition map for dd-v1
                 tp = ma["provisionable"]["strategy"]
                 if tp == "dd-v1":
                     ma["provisionable"]["partition_map"]["disk"] = ma["blob"]["distfiles"][0]
+                else:
+                    raise NotImplementedError(f"provisionable strategy {tp} not supported")
 
                 # unpack package
                 # See: https://github.com/ruyisdk/ruyi/blob/main/ruyi/ruyipkg/unpack_method.py
