@@ -1,3 +1,4 @@
+import logging
 import tomllib
 
 from github import Auth, Github
@@ -5,6 +6,9 @@ from typing import ClassVar
 
 from .upstream import Upstream
 from ..config.const import nvchecker_key
+
+
+logger = logging.getLogger(__name__)
 
 
 class GithubUpstream(Upstream):
@@ -22,6 +26,10 @@ class GithubUpstream(Upstream):
                 self._github = Github(auth=Auth.Token(key))
             else:
                 self._github = Github()
+
+        else:
+            logger.warning(f"nvchecker keyfile {nvchecker_key} not found.")
+            self._github = Github()
 
         self._repo = self._github.get_repo(repo)
 
