@@ -10,3 +10,8 @@ image-combo = [
     "uboot-revyos-milkv-meles-8g",
     "uboot-revyos-milkv-meles-16g"
 ]
+
+[policies]
+uboot-revyos-milkv-meles-4g = ["keep_back"]
+uboot-revyos-milkv-meles-8g = ["keep_back"]
+uboot-revyos-milkv-meles-16g = ["keep_back"]
