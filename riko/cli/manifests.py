@@ -109,7 +109,13 @@ def manifests(up_name: str, gen_vers: list[str]):
             if up_source == "github":
                 up = GithubUpstream(nv_dat["github"])
             elif up_source == "regex":
-                up = RegexUpstream(nv_dat["url"], nv_dat["regex"])
+                source = up_cfg.get_source()
+
+                file_url = source["regex_file_url"]
+                file_url = file_url.replace("{{nvchecker.url}}", nv_dat["url"])
+                file_url = file_url.replace("{{upstream_version}}", gv)
+
+                up = RegexUpstream(nv_dat["url"], nv_dat["regex"], file_url, source["regex_file_regex"])
             else:
                 raise NotImplementedError(f"upstream source {up_source} not supported")
 

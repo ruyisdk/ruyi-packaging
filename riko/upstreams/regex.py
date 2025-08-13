@@ -13,18 +13,57 @@ logger = logging.getLogger(__name__)
 class RegexUpstream(Upstream):
     source: ClassVar[str] = "regex"
 
-    def __init__(self, base_url: str, base_re: str) -> None:
+    def __init__(self, base_url: str, base_re: str, file_url: str, file_re: str) -> None:
         self._base_url = base_url
         self._base_regex = base_re
-        self._file_dir: str = ""
-        self._file_regex: str = ""
+        self._file_url = file_url
+        self._file_regex = file_re
 
-    def get_release_asserts(self, file_dir: str, file_regex: str) -> List[str]:
-        self._file_regex = file_regex
-        self._file_dir = file_dir
+        self._ready = False
+        self._text = ""
+        self._asserts: List[str] = []
 
-        resp = requests.get(self._base_url + self._file_dir)
+
+    def get_release_asserts(self) -> List[str]:
+        if self._ready:
+            return self._asserts
+
+        resp = requests.get(self._file_url)
         if resp.status_code != 200:
-            raise RuntimeError(f"url {self._base_url + self._file_dir} returned status code {resp.status_code}")
+            raise RuntimeError(f"url {self._file_url} returned status code {resp.status_code}")
 
-        return re.findall(self._file_regex, resp.text)
+        self._text = resp.text
+        self._asserts = re.findall(self._file_regex, self._text)
+        self._ready = True
+
+        return self._asserts
+
+    def get_release_asserts_substring(self, substr: str) -> List[str]:
+        r = []
+
+        for f in self.get_release_asserts():
+            if substr in f:
+                r.append(f)
+
+        return r
+
+    def get_release_assert_substring(self, substr: str) -> str:
+        r = self.get_release_asserts_substring(substr)
+
+        assert len(r) == 1
+        return r[0]
+
+    def get_release_asserts_regex(self, pattern: str) -> List[str]:
+        r = []
+
+        for f in self.get_release_asserts():
+            if re.match(pattern, f):
+                r.append(f)
+
+        return r
+
+    def get_release_assert_regex(self, pattern: str) -> str:
+        r = self.get_release_asserts_regex(pattern)
+
+        assert len(r) == 1
+        return r[0]

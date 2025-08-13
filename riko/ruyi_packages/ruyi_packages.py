@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 
 class UpstreamConfig:
-    def __init__(self, name: str, category: str, nv_dat: Dict):
+    def __init__(self, name: str, category: str, nv_dat: Dict, up_source: Dict):
         """
-        describe upstream of a set of manifests
+        describe upstream of a set of manifests, in short, riko.toml
         :param name: the name of the upstream
         :param category: refer to packages-index combo category
         :param nv_dat: a set of nvchecker config data
@@ -22,7 +22,8 @@ class UpstreamConfig:
         self._category: str = category
         self._nv_data: Dict = nv_dat
 
-        # empty combos
+        # extra data
+        self._source: Dict[str, str] = up_source
         self._combos: List[str] = []
         self._policies: Dict[str, List[str]] = {}
 
@@ -54,7 +55,13 @@ class UpstreamConfig:
     def get_policy(self, combo: str) -> List[str]:
         return self._policies.get(combo, [])
 
+    def get_source(self) -> Dict[str, str]:
+        return self._source
+
 class RuyiPackages:
+    """
+    load all riko.toml to this class, find riko.toml by name, now only support category board-image
+    """
 
     def __init__(self, path: Path):
         self._path: Path = path
@@ -70,7 +77,7 @@ class RuyiPackages:
                 with open(self._path / cat / pkg / "riko.toml", "rb") as f:
                     cfg: Dict = tomllib.load(f)
 
-                up = UpstreamConfig(pkg, cat, cfg["nvchecker"])
+                up = UpstreamConfig(pkg, cat, cfg["nvchecker"], cfg.get("source", {}))
                 if cat != "board-image":
                     raise NotImplementedError(f"Category {cat} not implemented")
 

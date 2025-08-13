@@ -3,6 +3,11 @@ source = "regex"
 url = "https://mirror.iscas.ac.cn/revyos/extra/images/lpi4a/"
 regex = '<a href="([\d.]+)/">[\d.]+/</a>'
 
+[source]
+# see: riko.upstreams.regex.RegexUpstream
+regex_file_url = "{{nvchecker.url}}{{upstream_version}}/"
+regex_file_regex = '<a href="(.+)">.+</a> '
+
 [entities]
 image-combo = [
     "revyos-sipeed-lpi4a",

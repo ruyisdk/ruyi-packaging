@@ -4,9 +4,10 @@ from typing import Dict, Tuple, Union
 
 from .packages_index.manifests import PackageVersion
 from .upstreams.github import GithubUpstream
+from .upstreams.regex import RegexUpstream
 
-__all__ = ("RikoPkg", "GithubUpstream", )
-_UpstreamLike = Union[GithubUpstream]
+__all__ = ("GithubUpstream", "RegexUpstream", "RikoPkg", )
+_UpstreamLike = Union[GithubUpstream, RegexUpstream]
 
 
 class RikoPkg(PackageVersion):
