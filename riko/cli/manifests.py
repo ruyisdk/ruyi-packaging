@@ -60,12 +60,12 @@ def manifests(up_name: str, gen_vers: list[str]):
         logger.warning("No version to be generated")
         return
 
-    # load config
+    # load riko.toml config
     up_cfg = get_riko().get_ruyi_package(up_name)
     if up_cfg is None:
         raise FileNotFoundError(f"No riko upstream package `{up_name}` found")
 
-    # load old manifest
+    # load old packages-index manifest
     cbs: list[str] = up_cfg.get_combos()
     vers: list[PackageVersion] = []
     for c in cbs:
