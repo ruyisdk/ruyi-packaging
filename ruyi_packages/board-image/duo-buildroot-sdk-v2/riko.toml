@@ -12,6 +12,6 @@ image-combo = [
     "buildroot-sdk-milkv-duo-python",
 ]
 
-[match]
-buildroot-sdk-milkv-duo256m-python = ""
-buildroot-sdk-milkv-duo-python = ""
+[policies]
+buildroot-sdk-milkv-duo256m-python = ["skip"]
+buildroot-sdk-milkv-duo-python = ["skip"]

@@ -10,7 +10,8 @@ class UpstreamConfig:
         """
         describe upstream of a set of manifests
         :param name: the name of the upstream
-        :param data: a set of nvchecker config data
+        :param category: refer to packages-index combo category
+        :param nv_dat: a set of nvchecker config data
         """
         # nvchecker config
         self._name: str = name
@@ -19,7 +20,7 @@ class UpstreamConfig:
 
         # empty combos
         self._combos: List[str] = []
-        self._match: Dict[str, str] = {}
+        self._policies: Dict[str, List[str]] = {}
 
     def get_name(self) -> str:
         return self._name
@@ -30,21 +31,21 @@ class UpstreamConfig:
     def get_nvchecker_dat(self) -> Dict:
         return self._nv_data
 
-    def set_combos(self, combos: List[str], match: Dict[str, str]) -> None:
+    def set_combos(self, combos: List[str], policies: Dict[str, List[str]]) -> None:
         """
         set board-image combos
         :param combos: a set of manifests(board-images), they release in same source and should be checked together
-        :param match: a set of file match regex
+        :param policies: a set of combo policies
         :return:
         """
         self._combos = combos
-        self._match = match
+        self._policies = policies
 
     def get_combos(self) -> List[str]:
         return self._combos
 
-    def get_match(self) -> Dict[str, str]:
-        return self._match
+    def get_policies(self) -> Dict[str, List[str]]:
+        return self._policies
 
 
 class RuyiPackages:
@@ -69,16 +70,16 @@ class RuyiPackages:
 
                 com_orig = cfg["entities"]["image-combo"]
                 combos = []
-                # match may not exist
-                match = cfg.get("match")
-                # match present and is "" means this combo should be ignored
+                # check policies may not exist
+                policies: Dict[str, List[str]] | None = cfg.get("policies")
+                # policy "skip" presents means this combo should be ignored
                 for c in com_orig:
-                    if match is not None and match.get(c) == "":
-                        match.pop(c)
+                    if policies is not None and isinstance(policies.get(c), list) and "skip" in policies[c]:
+                        policies.pop(c)
                         continue
                     combos.append(c)
 
-                up.set_combos(combos, match)
+                up.set_combos(combos, policies if policies is not None else {})
 
                 self._upstream_cfg[pkg] = up
 

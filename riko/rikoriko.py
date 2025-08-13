@@ -101,6 +101,11 @@ class Riko:
         return self._ruyi_packages
 
     def get_ruyi_package(self, up_name: str) -> UpstreamConfig | None:
+        """
+        ruyi packages described by riko.toml
+        :param up_name: upstream package name
+        :return: riko.toml in UpstreamConfig
+        """
         return self._ruyi_packages.get_upstream(up_name)
 
 
