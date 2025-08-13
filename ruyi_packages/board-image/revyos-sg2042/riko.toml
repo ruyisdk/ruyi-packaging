@@ -1,0 +1,9 @@
+[nvchecker]
+source = "regex"
+url = "https://mirror.iscas.ac.cn/revyos/extra/images/sg2042/"
+regex = '<a href="([\d.]+)/">[\d.]+/</a>'
+
+[entities]
+image-combo = [
+    "revyos-milkv-pioneer",
+]
