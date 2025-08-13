@@ -24,19 +24,18 @@ def rikoring(old_pkgs: List[RikoPkg], new_pkgs: List[RikoPkg]) -> None:
     new_toml["metadata"]["desc"] = (
         new_toml["metadata"]["desc"].replace(old_pkgs[0].get_upstream_version(), new_pkgs[0].get_upstream_version()))
 
+    # See: https://github.com/ruyisdk/support-matrix/issues/353
     # Fourth, get file
-    assets = upstream.get_release_asserts(upstream_version)
-    files: List[Tuple[str, str]] = []
-    for asset in assets:
-        print(asset.name)
-        if "Star64_noble" in asset.name and asset.name[-1] == "z":
-            files.append((asset.name, asset.browser_download_url))
+    # assets = upstream.get_release_asserts(upstream_version)
+    # files: List[Tuple[str, str]] = []
+    # for asset in assets:
+    #    if "Star64_noble" in asset.name and asset.name[-1] == "z":
+    #        files.append((asset.name, asset.browser_download_url))
 
-    print(files)
-    assert len(files) == 1
-    new_toml["blob"]["distfiles"] = [files[0][0], ]
-    new_toml["distfiles"][0]["name"] = files[0][0]
-    new_toml["distfiles"][0]["urls"] = [files[0][1], ]
+    # assert len(files) == 1
+    # new_toml["blob"]["distfiles"] = [files[0][0], ]
+    # new_toml["distfiles"][0]["name"] = files[0][0]
+    # new_toml["distfiles"][0]["urls"] = [files[0][1], ]
 
     # finally, set flag to ask riko package new one
-    new_pkgs[0].set_manifest_ready()
+    # new_pkgs[0].set_manifest_ready()

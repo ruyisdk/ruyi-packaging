@@ -213,4 +213,6 @@ def manifests(up_name: str, gen_vers: list[str]):
                 if ret != 0:
                     raise subprocess.CalledProcessError(ret, cmd)
             else:
+                logger.warning(f"skip package {nv.get_combo()}")
+
                 continue
