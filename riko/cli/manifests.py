@@ -17,6 +17,7 @@ from ..config.const import riko_cache_dir, riko_manifests_dir, ruyi_pkgs_dir
 from ..packages_index.manifests import PackageVersion
 from ..rikoriko import get_riko
 from ..upstreams.github import GithubUpstream
+from ..upstreams.regex import RegexUpstream
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +108,8 @@ def manifests(up_name: str, gen_vers: list[str]):
             up_source = nv_dat["source"]
             if up_source == "github":
                 up = GithubUpstream(nv_dat["github"])
+            elif up_source == "regex":
+                up = RegexUpstream(nv_dat["url"], nv_dat["regex"])
             else:
                 raise NotImplementedError(f"upstream source {up_source} not supported")
 
