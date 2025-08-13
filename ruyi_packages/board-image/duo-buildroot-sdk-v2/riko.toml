@@ -13,5 +13,8 @@ image-combo = [
 ]
 
 [policies]
+# those combos will never upgrade
+# see: https://github.com/ruyisdk/packages-index/pull/75
+# so, use `skip` policy here
 buildroot-sdk-milkv-duo256m-python = ["skip"]
 buildroot-sdk-milkv-duo-python = ["skip"]

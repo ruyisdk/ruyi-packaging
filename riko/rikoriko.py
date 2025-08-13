@@ -61,15 +61,12 @@ class Riko:
             # find latest version among all combos
             version = semver.Version(0, 0, 0)
             upstream_version = ""
-            for pkg in up.get_combos():
-                vers = cat.get_package(pkg).get_versions()
 
-                for ver in vers:
-                    if ver.version.compare(version) > 0:
-                        if ver.upstream_version is None or ver.upstream_version == "":
-                            continue
-                        version = ver.version
-                        upstream_version = ver.upstream_version
+            for pkg in up.get_combos():
+                ver = self.get_packages_index_latest(cat.get_name(), pkg)
+                if ver.version.compare(version) > 0:
+                    version = ver.version
+                    upstream_version = ver.upstream_version
 
             old_data[name] = {"version": upstream_version}
 
@@ -89,6 +86,19 @@ class Riko:
 
     def get_packages_index(self) -> PackagesIndex:
         return self._packages_index
+
+    def get_packages_index_latest(self, category: str, pkg: str) -> PackageVersion:
+        version = semver.Version(0, 0, 0)
+        package_version = None
+
+        for v in self._packages_index.get_category(category).get_package(pkg).get_versions():
+            if v.version.compare(version) > 0:
+                if v.upstream_version is None or v.upstream_version == "":
+                    continue
+                version = v.version
+                package_version = v
+
+        return self.get_packages_index_manifest(category, pkg, package_version.upstream_version)
 
     def get_packages_index_manifest(self, category: str, pkg: str, up_ver: str) -> PackageVersion | None:
         for v in self._packages_index.get_category(category).get_package(pkg).get_versions():

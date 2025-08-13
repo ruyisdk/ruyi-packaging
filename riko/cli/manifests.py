@@ -71,8 +71,15 @@ def manifests(up_name: str, gen_vers: list[str]):
     for c in cbs:
         pkg_ver = get_riko().get_packages_index_manifest(up_cfg.get_category(), c, old_ver)
         if pkg_ver is None:
-            raise FileNotFoundError(f"No ruyi packages-index manifest for category `{up_cfg.get_category()}` "
-                                    f"package {c} version {old_ver} found")
+            if "keep_back" in up_cfg.get_policy(c):
+                pkg_ver = get_riko().get_packages_index_latest(up_cfg.get_category(), c)
+                logger.debug(f"no ruyi packages-index manifest for category `{up_cfg.get_category()}` "
+                             f"package {c} version {old_ver} found")
+                logger.debug(f"use `keep_back` policy, find ruyi packages-index manifest of category "
+                             f"`{up_cfg.get_category()}` package {c} version {pkg_ver.upstream_version}")
+            else:
+                raise FileNotFoundError(f"No ruyi packages-index manifest for category `{up_cfg.get_category()}` "
+                                        f"package {c} version {old_ver} found")
         vers.append(pkg_ver)
 
     # output dir

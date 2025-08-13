@@ -1,9 +1,13 @@
 
+import logging
 import os
 import tomllib
 
 from pathlib import Path
 from typing import Dict, List
+
+logger = logging.getLogger(__name__)
+
 
 class UpstreamConfig:
     def __init__(self, name: str, category: str, nv_dat: Dict):
@@ -47,6 +51,8 @@ class UpstreamConfig:
     def get_policies(self) -> Dict[str, List[str]]:
         return self._policies
 
+    def get_policy(self, combo: str) -> List[str]:
+        return self._policies.get(combo, [])
 
 class RuyiPackages:
 
@@ -75,6 +81,7 @@ class RuyiPackages:
                 # policy "skip" presents means this combo should be ignored
                 for c in com_orig:
                     if policies is not None and isinstance(policies.get(c), list) and "skip" in policies[c]:
+                        logger.debug(f"apply `skip` policy, combo {c} skipped")
                         policies.pop(c)
                         continue
                     combos.append(c)
