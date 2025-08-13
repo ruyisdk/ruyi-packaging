@@ -9,6 +9,9 @@ class PackageVersion:
         self.upstream_version: str = upstream_version
         self.manifest: Dict = manifest
 
+        # riko.toml policies
+        self.policies: set[str] = set()
+
     def set_manifest(self, manifest: Dict):
         self.manifest = manifest
 
@@ -21,6 +24,17 @@ class PackageVersion:
     def get_upstream_version(self) -> str:
         return self.upstream_version
 
+    def add_policies(self, policies: List[str]) -> None:
+        for p in policies:
+            self.policies.add(p)
+
+    def accept_policy(self, policy: str) -> bool:
+        """
+        use this function after add_policies called
+        :param policy:
+        :return:
+        """
+        return policy in self.policies
 
 class Package:
 

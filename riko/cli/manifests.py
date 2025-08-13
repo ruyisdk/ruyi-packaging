@@ -74,10 +74,12 @@ def manifests(up_name: str, gen_vers: list[str]):
         if pkg_ver is None:
             if "keep_back" in up_cfg.get_policy(c):
                 pkg_ver = get_riko().get_packages_index_latest(up_cfg.get_category(), c)
+                pkg_ver.add_policies(up_cfg.get_policy(c))
                 logger.debug(f"no ruyi packages-index manifest for category `{up_cfg.get_category()}` "
                              f"package {c} version {old_ver} found")
                 logger.debug(f"use `keep_back` policy, find ruyi packages-index manifest of category "
                              f"`{up_cfg.get_category()}` package {c} version {pkg_ver.upstream_version}")
+                logger.info(f"{up_name} manifest {c} combo base on old version `{pkg_ver.upstream_version}`")
             else:
                 raise FileNotFoundError(f"No ruyi packages-index manifest for category `{up_cfg.get_category()}` "
                                         f"package {c} version {old_ver} found")
@@ -92,32 +94,36 @@ def manifests(up_name: str, gen_vers: list[str]):
     for i in range(0, len(vers)):
         pkg = RikoPkg(up_cfg.get_category(), cbs[i], up_cfg.get_name(), vers[i].version, vers[i].upstream_version)
         pkg.set_manifest(vers[i].manifest)
+        pkg.add_policies([p for p in vers[i].policies])
         old_versions.append(pkg)
 
     # new ver
+    nv_dat = up_cfg.get_nvchecker_dat()
+    up_source = nv_dat["source"]
+
     for gv in gen_vers:
         # gv is upstream version str
 
         # this version
         new_versions: List[RikoPkg] = []
 
+        # get UpstreamLike for different nvchecker source
+        # one upstream to many combos, package splitting
+        if up_source == "github":
+            up = GithubUpstream(nv_dat["github"])
+        elif up_source == "regex":
+            source = up_cfg.get_source()
+
+            file_url = source["regex_file_url"]
+            file_url = file_url.replace("{{nvchecker.url}}", nv_dat["url"])
+            file_url = file_url.replace("{{upstream_version}}", gv)
+
+            up = RegexUpstream(nv_dat["url"], nv_dat["regex"], file_url, source["regex_file_regex"])
+        else:
+            raise NotImplementedError(f"upstream source {up_source} not supported")
+
         # many combos
         for i in range(0, len(vers)):
-            # get UpstreamLike
-            nv_dat = up_cfg.get_nvchecker_dat()
-            up_source = nv_dat["source"]
-            if up_source == "github":
-                up = GithubUpstream(nv_dat["github"])
-            elif up_source == "regex":
-                source = up_cfg.get_source()
-
-                file_url = source["regex_file_url"]
-                file_url = file_url.replace("{{nvchecker.url}}", nv_dat["url"])
-                file_url = file_url.replace("{{upstream_version}}", gv)
-
-                up = RegexUpstream(nv_dat["url"], nv_dat["regex"], file_url, source["regex_file_regex"])
-            else:
-                raise NotImplementedError(f"upstream source {up_source} not supported")
 
             pkg = RikoPkg(up_cfg.get_category(), cbs[i], up_cfg.get_name(), vers[i].version, gv, up)
 
@@ -150,8 +156,11 @@ def manifests(up_name: str, gen_vers: list[str]):
             continue
 
         # check manifests
-        for nv in new_versions:
+        for j in range(0, len(new_versions)):
+            nv = new_versions[j]
+            ov = old_versions[j]
             ma, rdy = nv.get_manifest()
+            oma, _ = ov.get_manifest()
 
             if rdy:
 
@@ -163,6 +172,10 @@ def manifests(up_name: str, gen_vers: list[str]):
                 tp = ma["provisionable"]["strategy"]
                 if tp == "dd-v1":
                     ma["provisionable"]["partition_map"]["disk"] = ma["blob"]["distfiles"][0]
+                elif tp == "fastboot-v1":
+                    pass
+                elif tp == "fastboot-v1(lpi4a-uboot)":
+                    ma["provisionable"]["partition_map"]["uboot"] = ma["blob"]["distfiles"][0]
                 else:
                     raise NotImplementedError(f"provisionable strategy {tp} not supported")
 
@@ -177,7 +190,7 @@ def manifests(up_name: str, gen_vers: list[str]):
                         if ma["provisionable"]["partition_map"]["boot"].endswith(tar):
                             ma["provisionable"]["partition_map"]["boot"] = ma["provisionable"]["partition_map"]["boot"][:-len(tar)]
                         if ma["provisionable"]["partition_map"]["root"].endswith(tar):
-                            ma["provisionable"]["partition_map"]["boot"] = ma["provisionable"]["partition_map"]["boot"][:-len(tar)]
+                            ma["provisionable"]["partition_map"]["root"] = ma["provisionable"]["partition_map"]["root"][:-len(tar)]
                     elif tp == "fastboot-v1(lpi4a-uboot)":
                         if ma["provisionable"]["partition_map"]["uboot"].endswith(tar):
                             ma["provisionable"]["partition_map"]["uboot"] = ma["provisionable"]["partition_map"]["uboot"][:-len(tar)]
@@ -213,6 +226,18 @@ def manifests(up_name: str, gen_vers: list[str]):
                     ma["distfiles"][i]["checksums"]["sha256"] = sha256.hexdigest()
                     ma["distfiles"][i]["checksums"]["sha512"] = sha512.hexdigest()
 
+                # check `keep_back` policy
+                if ov.accept_policy("keep_back"):
+                    if len(ma["distfiles"]) == 1:
+                        if (ma["distfiles"][0]["checksums"]["sha256"] == oma["distfiles"][0]["checksums"]["sha256"] and
+                            ma["distfiles"][0]["checksums"]["sha512"] == oma["distfiles"][0]["checksums"]["sha512"]):
+                            logger.info(f"`keep_back` for package {nv.get_combo()}, version "
+                                           f"{ma["metadata"]["upstream_version"]} and version "
+                                           f"{oma["metadata"]["upstream_version"]} have same checksums")
+                            continue
+                    else:
+                        logger.warning("`keep_back` set but manifest has multiple distfiles")
+
                 # write toml
                 ensure_dir(riko_manifests_dir / nv.get_category())
                 ensure_dir(riko_manifests_dir / nv.get_category() / nv.get_combo())
@@ -228,6 +253,8 @@ def manifests(up_name: str, gen_vers: list[str]):
                 ret = process.wait()
                 if ret != 0:
                     raise subprocess.CalledProcessError(ret, cmd)
+
+                logger.info(f"new manifest for package {nv.get_combo()} version {ma["metadata"]["upstream_version"]}")
             else:
                 logger.warning(f"skip package {nv.get_combo()}")
 
