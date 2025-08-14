@@ -31,9 +31,10 @@ if __name__ == '__main__':
     subparser.set_defaults(func=lambda args: list_result(args.event))
 
     subparser = subparsers.add_parser("manifests", help="Generate new packages-index manifests from old ones")
+    subparser.add_argument("-d", "--down-grade", action="store_true", help="allow generating downgrade manifests")
     subparser.add_argument("up_name", type=str, help="upstream name")
     subparser.add_argument("gen_vers", nargs="*", help="specify new versions, or use nvchecker result")
-    subparser.set_defaults(func=lambda args: manifests(args.up_name, args.gen_vers))
+    subparser.set_defaults(func=lambda args: manifests(args.up_name, args.gen_vers, args.down_grade))
 
     if len(sys.argv) == 1:
         parser.print_help()
