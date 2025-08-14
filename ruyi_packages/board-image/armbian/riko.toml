@@ -7,3 +7,6 @@ use_latest_release = true
 image-combo = [
     "armbian-pine64-star64",
 ]
+
+[policies]
+armbian-pine64-star64 = ["skip"]
