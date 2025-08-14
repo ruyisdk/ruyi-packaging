@@ -148,6 +148,9 @@ def manifests(up_name: str, gen_vers: list[str]):
             spec.loader.exec_module(module)
             rikoring = getattr(module, "rikoring")
             rikoring(old_versions, new_versions)
+            for i in range(0, len(old_versions)):
+                if new_versions[i].get_manifest_ready():
+                    assert new_versions[i].version.compare(old_versions[i].version) > 0
         except Exception as e:
             logger.error(e)
             traceback.print_exc()

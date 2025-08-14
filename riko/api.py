@@ -30,6 +30,9 @@ class RikoPkg(PackageVersion):
     def set_manifest_ready(self) -> None:
         self._manifest_ready = True
 
+    def get_manifest_ready(self) -> bool:
+        return self._manifest_ready
+
     def get_category(self) -> str:
         return self._category
 
