@@ -93,9 +93,9 @@ class RuyiPackages:
                         continue
                     combos.append(c)
 
-                up.set_combos(combos, policies if policies is not None else {})
-
-                self._upstream_cfg[pkg] = up
+                if len(combos) > 0:
+                    up.set_combos(combos, policies if policies is not None else {})
+                    self._upstream_cfg[pkg] = up
 
     def get_upstreams(self) -> Dict[str, UpstreamConfig]:
         return self._upstream_cfg
