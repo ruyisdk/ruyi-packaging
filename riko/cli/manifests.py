@@ -22,7 +22,7 @@ from ..upstreams.regex import RegexUpstream
 logger = logging.getLogger(__name__)
 
 
-def manifests(up_name: str, gen_vers: list[str]):
+def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
     """
     Generate packages-index manifests
     :param up_name: upstream name
@@ -149,7 +149,7 @@ def manifests(up_name: str, gen_vers: list[str]):
             rikoring = getattr(module, "rikoring")
             rikoring(old_versions, new_versions)
             for i in range(0, len(old_versions)):
-                if new_versions[i].get_manifest_ready():
+                if new_versions[i].get_manifest_ready() and not down_grade:
                     assert new_versions[i].version.compare(old_versions[i].version) > 0
         except Exception as e:
             logger.error(e)
