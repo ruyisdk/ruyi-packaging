@@ -127,10 +127,18 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
 
             pkg = RikoPkg(up_cfg.get_category(), cbs[i], up_cfg.get_name(), vers[i].version, gv, up)
 
-            # automatically set new values
             # before rikoring
             ma_cp = copy.deepcopy(vers[i].manifest)
+
+            # automatically set upstream_version
             ma_cp["metadata"]["upstream_version"] = gv
+
+            # automatically remove service_level
+            # this value should be set by support-matrix
+            if ma_cp["metadata"].get("service_level") is not None:
+                ma_cp["metadata"]["service_level"] = {}
+
+            # finish prepare rikoring
             pkg.set_manifest(ma_cp)
 
             new_versions.append(pkg)
@@ -249,7 +257,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 with open(new_toml, "wb") as nt:
                     tomli_w.dump(ma, nt)
 
-                cmd: List[str] = ["ruyi", "admin", "format-manifest", new_toml, ]
+                cmd: List[str] = ["ruyi", "admin", "format-manifest", str(new_toml), ]
                 env = os.environ.copy()
 
                 process = subprocess.Popen(cmd, env=env)
