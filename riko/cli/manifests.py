@@ -217,7 +217,8 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 for i in range(0, len(ma["distfiles"])):
                     url: str = ma["distfiles"][i]["urls"][0]
                     f_loc: str = riko_cache_dir / "curl.cache"
-                    cmd: List[str] = ["curl", "-L", url, "-o", str(f_loc), ]
+                    cmd: List[str] = ["curl", "-C", "-", "--retry", "3", "--retry-delay", "2", "--retry-all-errors",
+                                      "-L", url, "-o", str(f_loc), ]
                     env = os.environ.copy()
 
                     process = subprocess.Popen(cmd, env=env)
