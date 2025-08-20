@@ -29,12 +29,8 @@ def rikoring(old_pkgs: List[RikoPkg], new_pkgs: List[RikoPkg]) -> None:
         new_toml["metadata"]["desc"].replace(old_pkgs[0].get_upstream_version(), new_pkgs[0].get_upstream_version()))
 
     # Fourth, get file
-    assets = upstream.get_release_asserts(upstream_version)
-    files: List[Tuple[str, str]] = []
-    for asset in assets:
-        files.append((asset.name, asset.browser_download_url))
+    files = upstream.get_release_assert_substring("")
 
-    assert len(files) == 1
     new_toml["blob"]["distfiles"] = [files[0][0], ]
     new_toml["distfiles"][0]["name"] = files[0][0]
     new_toml["distfiles"][0]["urls"] = [files[0][1], ]
