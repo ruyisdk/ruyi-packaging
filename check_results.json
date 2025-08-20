@@ -1,5 +1,11 @@
 [
     {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
+        "result": "v2.0.1",
+        "current_version": "v2.0.0",
+        "failed": false
+    },
+    {
         "name": "buildroot  for LicheeRV Nano with version 20250319",
         "result": "20250804",
         "current_version": "20250319",
@@ -12,15 +18,15 @@
         "failed": false
     },
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
-        "result": "v1.1.4",
-        "current_version": "Duo-V1.0.7",
-        "failed": false
-    },
-    {
         "name": "ruyi",
         "result": "0.39.0",
         "current_version": "",
+        "failed": false
+    },
+    {
+        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v1.0.7-2023-1223",
+        "result": "v1.1.4",
+        "current_version": "Duo-V1.0.7",
         "failed": false
     },
     {
@@ -36,21 +42,9 @@
         "failed": false
     },
     {
-        "name": "Official Buildroot SDK image for Milk-V Duo (64M RAM) v2.0.0",
-        "result": "v2.0.1",
-        "current_version": "v2.0.0",
-        "failed": false
-    },
-    {
         "name": "Armbian 25.2.0-trunk.86 image for Pine64 Star64",
         "result": "25.11.0-trunk.21",
         "current_version": "25.2.0-trunk.86",
-        "failed": false
-    },
-    {
-        "name": "Debian image for Sipeed LicheeRV Nano with Sophgo SG200x, from https://github.com/Fishwaldo",
-        "result": "v1.4.0",
-        "current_version": "v1.4.0",
         "failed": false
     },
     {
@@ -63,6 +57,12 @@
         "name": "Official Debian Desktop SDK v3.6.1 image for Milk-V Mars v1.0.6 (SD card)",
         "result": "V1.0.6",
         "current_version": "V1.0.6",
+        "failed": false
+    },
+    {
+        "name": "Debian image for Sipeed LicheeRV Nano with Sophgo SG200x, from https://github.com/Fishwaldo",
+        "result": "v1.4.0",
+        "current_version": "v1.4.0",
         "failed": false
     },
     {
@@ -102,9 +102,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20240127 image for Sipeed Lichee Cluster 4A",
-        "result": "20240127",
-        "current_version": "20240127",
+        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
+        "result": "20240606",
+        "current_version": "20240319",
         "failed": false
     },
     {
@@ -120,9 +120,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20240202 image for Sipeed Lichee Console 4A",
-        "result": "20240606",
-        "current_version": "20240319",
+        "name": "RevyOS 20240127 image for Sipeed Lichee Cluster 4A",
+        "result": "20240127",
+        "current_version": "20240127",
         "failed": false
     },
     {
@@ -135,6 +135,12 @@
         "name": "U-Boot image for Sipeed Lichee Console 4A (16G RAM) and RevyOS 20240202",
         "result": "20240606",
         "current_version": "20240319",
+        "failed": false
+    },
+    {
+        "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
+        "result": "20250729",
+        "current_version": "20250420",
         "failed": false
     },
     {
@@ -156,9 +162,9 @@
         "failed": false
     },
     {
-        "name": "RevyOS 20250420 image for Sipeed LicheePi 4A",
-        "result": "20250729",
-        "current_version": "20250420",
+        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
+        "result": "20240606",
+        "current_version": "20240319",
         "failed": false
     },
     {
@@ -174,19 +180,13 @@
         "failed": false
     },
     {
-        "name": "U-Boot image for Sipeed Lichee Console 4A (8G RAM) and RevyOS 20240202",
-        "result": "20240606",
-        "current_version": "20240319",
-        "failed": false
-    },
-    {
-        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250420",
+        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250420",
         "result": "20250729",
         "current_version": "20250420",
         "failed": false
     },
     {
-        "name": "U-Boot image for LicheePi 4A (16G RAM) and RevyOS 20250420",
+        "name": "U-Boot image for LicheePi 4A (8G RAM) and RevyOS 20250420",
         "result": "20250729",
         "current_version": "20250420",
         "failed": false
