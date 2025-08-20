@@ -27,6 +27,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
     Generate packages-index manifests
     :param up_name: upstream name
     :param gen_vers: will generate versions
+    :param down_grade: will generate downgrade manifests
     :return:
     """
     res = get_riko().get_nvchecker_results("any")
@@ -47,7 +48,13 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
 
         gen_vers.append(result["version"])
 
-    old_ver = result["old_version"]
+    if result["event"] == "updated":
+        old_ver = result["old_version"]
+    else:
+        old_ver = result["version"]
+        if not down_grade:
+            logger.warning("Already updated")
+            return
 
     logger.info(f"Generate {up_name} manifests for versions {gen_vers}")
     logger.info(f"Generate {up_name} manifests base on old version `{old_ver}`")
