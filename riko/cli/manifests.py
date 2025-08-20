@@ -110,7 +110,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
         # get UpstreamLike for different nvchecker source
         # one upstream to many combos, package splitting
         if up_source == "github":
-            up = GithubUpstream(nv_dat["github"])
+            up = GithubUpstream(nv_dat["github"], gv)
         elif up_source == "regex":
             source = up_cfg.get_source()
 
