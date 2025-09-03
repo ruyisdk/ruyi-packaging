@@ -39,11 +39,11 @@ def rikoring(old_pkgs: List[RikoPkg], new_pkgs: List[RikoPkg]) -> None:
 
         if new_pkgs[i].get_combo() == "debian-desktop-sdk-milkv-mars-sd":
             new_toml["blob"]["distfiles"] = [mars_sd]
-            new_toml["distfiles"][0]["name"] = [mars_sd]
+            new_toml["distfiles"][0]["name"] = mars_sd
             new_toml["distfiles"][0]["urls"] = [mars_sd_url]
         elif new_pkgs[i].get_combo() == "debian-desktop-sdk-milkv-mars-cm-sd":
             new_toml["blob"]["distfiles"] = [mars_cm_sd]
-            new_toml["distfiles"][0]["name"] = [mars_cm_sd]
+            new_toml["distfiles"][0]["name"] = mars_cm_sd
             new_toml["distfiles"][0]["urls"] = [mars_cm_sd_url]
         else:
             raise RuntimeError(f"Unknown combo {old_pkgs[i].get_combo()}")
