@@ -1,15 +1,16 @@
 
+import ast
 import copy
 import hashlib
 import importlib.util
 import logging
 import os
 import subprocess
+import tomli_w
 import traceback
+import yaml
 
 from typing import Dict, List
-
-import tomli_w
 
 from .utils import ensure_dir
 from ..api import RikoPkg
@@ -90,10 +91,69 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
     ensure_dir(riko_cache_dir)
     ensure_dir(riko_manifests_dir)
 
-    riko_py = ruyi_pkgs_dir / riko_toml.get_category() / up_name / "riko.py"
-    riko_yaml = ruyi_pkgs_dir / riko_toml.get_category() / up_name / "riko.yaml"
+    riko_py_p = ruyi_pkgs_dir / riko_toml.get_category() / up_name / "riko.py"
+    riko_yaml_p = ruyi_pkgs_dir / riko_toml.get_category() / up_name / "riko.yaml"
 
-    if riko_yaml.exists():
+    if riko_yaml_p.exists():
+        riko_yaml_orig: Dict = yaml.safe_load(riko_yaml_p.read_text())
+        assert riko_yaml_orig["format"] == "v1"
+
+        # riko.yaml parsing
+        def tree_update_inner(key: str, value: Dict | List | str) -> Dict:
+            if isinstance(value, Dict):
+                tree_new = {}
+                for k, v in value.items():
+                    tree_new.update(tree_update_inner(k, v))
+
+                return {key: tree_new}
+            elif isinstance(value, List):
+                list_new = []
+                if isinstance(value[0], Dict):
+                    for v in value:
+                        list_new.append(tree_update_inner("k", v)["k"])
+                elif isinstance(value[0], str):
+                    for s in value:
+                        list_new.append(ast.parse(s))
+                else:
+                    raise RuntimeError(f"Unexpected type {type(value)}")
+                return {key: list_new}
+            elif isinstance(value, str):
+                return {key: ast.parse(value)}
+            elif value is None:
+                return {key: ""}
+            else:
+                raise RuntimeError(f"Unexpected type {type(value)}")
+
+        def tree_update(tree_old: Dict, tree_raw: Dict) -> Dict:
+            """
+            update tree_raw to tree_old, and turn str value to ast
+            :param tree_old:
+            :param tree_raw:
+            :return:
+            """
+            tree_new = copy.deepcopy(tree_old)
+
+            tree_new.update(tree_update_inner("k", tree_raw)["k"])
+
+            return tree_new
+
+        # riko.yaml api
+
+        for gv in gen_vers:
+            riko_yaml = copy.deepcopy(riko_yaml_orig)
+
+            # local variables
+            upstream_version = gv
+
+            riko_yaml_source = {}
+            riko_yaml_cbs = {}
+            if "source" in riko_yaml.keys():
+                riko_yaml_source = tree_update({"format": riko_yaml["format"]}, riko_yaml["source"])
+
+            for cbs in gen_cbs:
+                if cbs in riko_yaml.keys():
+                    riko_yaml_cbs[cbs] = tree_update(riko_yaml_source, riko_yaml[cbs])
+
         logger.warning("Riko.yaml not implemented.")
     else:
         # riko v0.0.1
@@ -101,8 +161,8 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
         # upgrade from old manfests
         logger.info(f"Generate {up_name} manifests base on old version `{old_ver}`")
 
-        if not riko_py.exists():
-            raise FileNotFoundError(f"{riko_py} not found")
+        if not riko_py_p.exists():
+            raise FileNotFoundError(f"{riko_py_p} not found")
 
         # old ver
         old_versions: List[RikoPkg] = []
@@ -161,7 +221,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
             # generate new manifests for this version
 
             # call riko.py
-            spec = importlib.util.spec_from_file_location("riko_py", riko_py)
+            spec = importlib.util.spec_from_file_location("riko_py", riko_py_p)
             module = importlib.util.module_from_spec(spec)
 
             try:
