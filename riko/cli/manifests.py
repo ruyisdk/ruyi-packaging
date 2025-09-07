@@ -68,9 +68,9 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
         raise FileNotFoundError(f"No riko upstream package `{up_name}` found")
 
     # load old packages-index manifest
-    cbs: list[str] = riko_toml.get_combos()
-    vers: list[PackageVersion] = []
-    for c in cbs:
+    gen_cbs: list[str] = riko_toml.get_combos()
+    gen_cbs_ov: list[PackageVersion] = []
+    for c in gen_cbs:
         pkg_ver = get_riko().get_packages_index_manifest(riko_toml.get_category(), c, old_ver)
         if pkg_ver is None:
             if "keep_back" in riko_toml.get_policy(c):
@@ -84,7 +84,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
             else:
                 raise FileNotFoundError(f"No ruyi packages-index manifest for category `{riko_toml.get_category()}` "
                                         f"package {c} version {old_ver} found")
-        vers.append(pkg_ver)
+        gen_cbs_ov.append(pkg_ver)
 
     # output dir
     ensure_dir(riko_cache_dir)
@@ -106,10 +106,10 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
 
         # old ver
         old_versions: List[RikoPkg] = []
-        for i in range(0, len(vers)):
-            pkg = RikoPkg(riko_toml.get_category(), cbs[i], riko_toml.get_name(), vers[i].version, vers[i].upstream_version)
-            pkg.set_manifest(vers[i].manifest)
-            pkg.add_policies([p for p in vers[i].policies])
+        for i in range(0, len(gen_cbs_ov)):
+            pkg = RikoPkg(riko_toml.get_category(), gen_cbs[i], riko_toml.get_name(), gen_cbs_ov[i].version, gen_cbs_ov[i].upstream_version)
+            pkg.set_manifest(gen_cbs_ov[i].manifest)
+            pkg.add_policies([p for p in gen_cbs_ov[i].policies])
             old_versions.append(pkg)
 
         # new ver
@@ -138,12 +138,12 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 raise NotImplementedError(f"upstream source {up_source} not supported")
 
             # many combos
-            for i in range(0, len(vers)):
+            for i in range(0, len(gen_cbs_ov)):
 
-                pkg = RikoPkg(riko_toml.get_category(), cbs[i], riko_toml.get_name(), vers[i].version, gv, up)
+                pkg = RikoPkg(riko_toml.get_category(), gen_cbs[i], riko_toml.get_name(), gen_cbs_ov[i].version, gv, up)
 
                 # before rikoring
-                ma_cp = copy.deepcopy(vers[i].manifest)
+                ma_cp = copy.deepcopy(gen_cbs_ov[i].manifest)
 
                 # automatically set upstream_version
                 ma_cp["metadata"]["upstream_version"] = gv
