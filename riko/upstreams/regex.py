@@ -62,7 +62,7 @@ class RegexUpstream(Upstream):
         r = []
 
         for f in self.get_release_asserts():
-            if re.match(pattern, f):
+            if re.search(pattern, f):
                 r.append(self._file_name_and_url(f))
 
         return r
