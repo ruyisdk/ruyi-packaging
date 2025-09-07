@@ -3,6 +3,8 @@ import logging
 import semver
 import tomli_w
 
+from typing import Dict, List
+
 from .config.const import ruyi_cache_dir, nvchecker_config, nvchecker_result, nvchecker_old_ver, nvchecker_new_ver, \
     ruyi_pkgs_dir
 from .nvchecker.results import NvcheckerResults
@@ -32,7 +34,7 @@ class Riko:
             logger.warning("Riko cache not found, please run `riko check` first")
 
     def generate_nvchecker_config(self) -> None:
-        nvchecker_cfg: dict = {
+        nvchecker_cfg: Dict = {
             "__config__": {
                 "oldver": str(nvchecker_old_ver.name),
                 "newver": str(nvchecker_new_ver.name),
@@ -78,11 +80,18 @@ class Riko:
         with open(nvchecker_old_ver, "w") as f:
             json.dump(format_data, f, indent=2)
 
-    def get_nvchecker_results(self, event_or_level: str) -> list[dict]:
+    def get_nvchecker_results(self, event_or_level: str) -> List[Dict]:
         if event_or_level == "any":
             return self._nvchecker_result.get_data()
         else:
             return self._nvchecker_result.get_event_data(event_or_level)
+
+    def get_nvchecker_result(self, up_name: str) -> Dict | None:
+        for r in self._nvchecker_result.get_data():
+            if r.get("name") == up_name:
+                return r
+
+        return None
 
     def get_packages_index(self) -> PackagesIndex:
         return self._packages_index
