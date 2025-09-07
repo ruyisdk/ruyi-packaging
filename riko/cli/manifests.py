@@ -137,6 +137,11 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
 
             return tree_new
 
+        # riko.yaml ast check function
+        def riko_yaml_ast_check(exp: ast.Expression, g_vars: Dict, g_calls: Dict) -> bool:
+            _ast_allowed = (ast.Expression, ast.Call, ast.Name, ast.Load, ast.Constant, ast.Tuple)
+            return True
+
         # riko.yaml running functions
         def riko_yaml_run(_up, om: Dict, nm: Dict, ym: Dict) -> Dict:
             # riko.yaml vals
@@ -191,13 +196,18 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                     _label.append(k)
 
                     if isinstance(v, ast.Expression):
-                        g_vars = {"assign": _assign,
-                                  "substring": _substring,
-                                  "regex": _regex,
-                                  "disk": _disk,
-                                  "upstream_version": _upstream_version,
-                                  "old_upstream_version": _old_upstream_version}
-                        _ym_t[k] = eval(compile(v, filename="<expr>", mode="eval"), g_vars)
+                        _g_vars = {"upstream_version": _upstream_version,
+                                   "old_upstream_version": _old_upstream_version}
+                        _g_calls = {"assign": _assign,
+                                    "substring": _substring,
+                                    "regex": _regex,
+                                    "disk": _disk,}
+                        if riko_yaml_ast_check(v, _g_vars, _g_calls):
+                            _ym_t[k] = eval(compile(v, filename="<expr>", mode="eval"), _g_vars | _g_calls)
+                            if not isinstance(_ym_t[k], str):
+                                _ym_t[k] = f"value not str but {type(_ym_t[k])}"
+                        else:
+                            _ym_t[k] = "AST check failed"
                     elif isinstance(v, str):
                         pass
                     elif isinstance(v, Dict):
