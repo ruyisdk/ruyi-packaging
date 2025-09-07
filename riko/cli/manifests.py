@@ -10,7 +10,7 @@ import tomli_w
 import traceback
 import yaml
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from .utils import ensure_dir
 from ..api import RikoPkg
@@ -98,7 +98,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
         riko_yaml_orig: Dict = yaml.safe_load(riko_yaml_p.read_text())
         assert riko_yaml_orig["format"] == "v1"
 
-        # riko.yaml parsing
+        # riko.yaml parsing functions
         def tree_update_inner(key: str, value: Dict | List | str) -> Dict:
             if isinstance(value, Dict):
                 tree_new = {}
@@ -113,12 +113,12 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                         list_new.append(tree_update_inner("k", v)["k"])
                 elif isinstance(value[0], str):
                     for s in value:
-                        list_new.append(ast.parse(s))
+                        list_new.append(ast.parse(s, mode="eval"))
                 else:
                     raise RuntimeError(f"Unexpected type {type(value)}")
                 return {key: list_new}
             elif isinstance(value, str):
-                return {key: ast.parse(value)}
+                return {key: ast.parse(value, mode="eval")}
             elif value is None:
                 return {key: ""}
             else:
@@ -137,22 +137,128 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
 
             return tree_new
 
-        # riko.yaml api
+        # riko.yaml running functions
+        def riko_yaml_run(_up, om: Dict, nm: Dict, ym: Dict) -> Dict:
+            # riko.yaml vals
+            _upstream_version = nm["metadata"]["upstream_version"]
+            _old_upstream_version = om["metadata"]["upstream_version"]
+            _files = {}
+            _label = []
 
+            # riko.yaml api
+            def _assign(_parm) -> str:
+                return str(_parm)
+
+            def _substring(_sub: str) -> Tuple[str, str]:
+                if _label[-1] == "name" and _label[-2] == "distfiles":
+                    if isinstance(_up, GithubUpstream):
+                        return _up.get_release_assert_substring(_sub)
+                    elif isinstance(_up, RegexUpstream):
+                        return _up.get_release_assert_substring(_sub)
+                    else:
+                        raise NotImplementedError(f"upstream source {_up.source} not supported")
+                else:
+                    raise NotImplementedError(f"substream not implemented for _label {_label}")
+
+            def _regex(_pat: str) -> Tuple[str, str]:
+                if _label[-1] == "name" and _label[-2] == "distfiles":
+                    if isinstance(_up, GithubUpstream):
+                        return _up.get_release_assert_regex(_pat)
+                    elif isinstance(_up, RegexUpstream):
+                        return _up.get_release_assert_regex(_pat)
+                    else:
+                        raise NotImplementedError(f"upstream source {_up.source} not supported")
+                else:
+                    raise NotImplementedError(f"substream not implemented for _label {_label}")
+
+            def _file(_name_url: Tuple[str, str]) -> str:
+                if _name_url[0] not in _files.keys():
+                    _files[_name_url[0]] = {}
+
+                _files[_name_url[0]]["url"] = _name_url[1]
+                return _name_url[0]
+
+            def _disk(_name_url: Tuple[str, str]) -> str:
+                if _name_url[0] not in _files.keys():
+                    _files[_name_url[0]] = {}
+
+                _files[_name_url[0]]["map"] = "disk"
+                return _file(_name_url)
+
+            # bfs run ast
+            def _ast_run(_ym_t: Dict):
+                for k, v in _ym_t.items():
+                    _label.append(k)
+
+                    if isinstance(v, ast.Expression):
+                        g_vars = {"assign": _assign,
+                                  "substring": _substring,
+                                  "regex": _regex,
+                                  "disk": _disk,
+                                  "upstream_version": _upstream_version,
+                                  "old_upstream_version": _old_upstream_version}
+                        _ym_t[k] = eval(compile(v, filename="<expr>", mode="eval"), g_vars)
+                    elif isinstance(v, str):
+                        pass
+                    elif isinstance(v, Dict):
+                        _ast_run(v)
+                    elif isinstance(v, List):
+                        for d in v:
+                            _ast_run(d)
+                    else:
+                        raise RuntimeError(f"Unexpected type {type(v)}")
+
+                    _label.pop()
+
+            _ast_run(ym)
+
+            # info in _files
+            if "provisionable" not in ym.keys():
+                ym["provisionable"] = {"partition_map": {}}
+            for ff in ym["distfiles"]:
+                ff["url"] = [_files[ff["name"]]["url"]]
+                ym["provisionable"]["partition_map"][_files[ff["name"]]["map"]] = ff["name"]
+
+            # info of _upstream_version
+            ym["metadata"]["upstream_version"] = _upstream_version
+
+            return ym
+
+        # generating
         for gv in gen_vers:
-            riko_yaml = copy.deepcopy(riko_yaml_orig)
+            # get UpstreamLike from riko.toml
+            riko_toml_nvdat = riko_toml.get_nvchecker_dat()
+            riko_toml_source = riko_toml_nvdat["source"]
+            if riko_toml_source == "github":
+                riko_toml_upstream = GithubUpstream(riko_toml_nvdat["github"], gv)
+            elif riko_toml_source == "regex":
+                source = riko_toml.get_source()
 
-            # local variables
-            upstream_version = gv
+                file_url = source["regex_file_url"]
+                file_url = file_url.replace("{{nvchecker.url}}", riko_toml_nvdat["url"])
+                file_url = file_url.replace("{{upstream_version}}", gv)
+
+                riko_toml_upstream = RegexUpstream(riko_toml_nvdat["url"], riko_toml_nvdat["regex"], file_url, source["regex_file_regex"])
+            else:
+                raise NotImplementedError(f"upstream source {riko_toml_source} not supported")
+
+            riko_yaml = copy.deepcopy(riko_yaml_orig)
 
             riko_yaml_source = {}
             riko_yaml_cbs = {}
             if "source" in riko_yaml.keys():
                 riko_yaml_source = tree_update({"format": riko_yaml["format"]}, riko_yaml["source"])
 
-            for cbs in gen_cbs:
-                if cbs in riko_yaml.keys():
-                    riko_yaml_cbs[cbs] = tree_update(riko_yaml_source, riko_yaml[cbs])
+            for i in range(0, len(gen_cbs)):
+                if gen_cbs[i] in riko_yaml.keys():
+                    riko_yaml_ast = tree_update(riko_yaml_source, riko_yaml[gen_cbs[i]])
+
+
+                    old_manifests = gen_cbs_ov[i].get_manifest()
+                    new_manifests = {"metadata": {"upstream_version": gv}}
+
+                    manifest_stage1 = riko_yaml_run(riko_toml_upstream, old_manifests, new_manifests, riko_yaml_ast)
+                    riko_yaml_cbs[gen_cbs[i]] = manifest_stage1
 
         logger.warning("Riko.yaml not implemented.")
     else:
