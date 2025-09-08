@@ -154,6 +154,27 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
             _files = {}
             _label = []
 
+            # riko.yaml utils
+            def _file(_name_url: Tuple[str, str]) -> str:
+                if _name_url[0] not in _files.keys():
+                    _files[_name_url[0]] = {}
+
+                _files[_name_url[0]]["url"] = _name_url[1]
+                return _name_url[0]
+
+            def _uncompress(_orig: str) -> str:
+                """
+                unpack package
+                See: https://github.com/ruyisdk/ruyi/blob/main/ruyi/ruyipkg/unpack_method.py
+                :param _orig:
+                :return:
+                """
+                _tars = [".tar.gz", ".tar.bz2", ".tar.lz4", ".tar.xz", ".tar.zst", ".gz", ".bz2", ".lz4", ".xz", ".zst", ".zip"]
+                for t in _tars:
+                    if _orig.endswith(t):
+                        return _orig[:-len(t)]
+                return _orig
+
             # riko.yaml api
             def _assign(_parm) -> str:
                 return str(_parm)
@@ -195,18 +216,12 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                     return _tree.replace(_old, _new)
                 return ""
 
-            def _file(_name_url: Tuple[str, str]) -> str:
-                if _name_url[0] not in _files.keys():
-                    _files[_name_url[0]] = {}
-
-                _files[_name_url[0]]["url"] = _name_url[1]
-                return _name_url[0]
-
             def _disk(_name_url: Tuple[str, str]) -> str:
                 if _name_url[0] not in _files.keys():
                     _files[_name_url[0]] = {}
 
                 _files[_name_url[0]]["map"] = "disk"
+                _files[_name_url[0]]["uncompressed"] = _uncompress(_name_url[0])
                 return _file(_name_url)
 
             # bfs run ast
@@ -247,12 +262,30 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 ym["provisionable"] = {"partition_map": {}}
             for ff in ym["distfiles"]:
                 ff["url"] = [_files[ff["name"]]["url"]]
-                ym["provisionable"]["partition_map"][_files[ff["name"]]["map"]] = ff["name"]
+                ym["provisionable"]["partition_map"][_files[ff["name"]]["map"]] = _files[ff["name"]]["uncompressed"]
 
             # info of _upstream_version
             ym["metadata"]["upstream_version"] = _upstream_version
 
             return ym
+
+        def manifests_reasoning(_ma: dict):
+            """
+            generate full manifests by rules
+            :param _ma:
+            :return:
+            """
+            # TODO:
+            pass
+
+        def manifests_validate(_ma: dict) -> bool:
+            """
+            check manifests dict keys and values
+            :param _ma:
+            :return:
+            """
+            # TODO:
+            return False
 
         # generating
         for gv in gen_vers:
@@ -289,7 +322,131 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                     manifest_stage1 = riko_yaml_run(riko_toml_upstream, old_manifests, new_manifests, riko_yaml_ast)
                     riko_yaml_cbs[gen_cbs[i]] = manifest_stage1
 
-        logger.warning("Riko.yaml not implemented.")
+            # check riko.py
+            riko_py_rikoring = None
+            riko_py_post_rikoring = None
+            if riko_py_p.exists():
+
+                # find functions
+                riko_py_spec = importlib.util.spec_from_file_location(f"{up_name}/riko.py", riko_py_p)
+                riko_py_module = importlib.util.module_from_spec(riko_py_spec)
+                riko_py_spec.loader.exec_module(riko_py_module)
+
+                try:
+                    riko_py_rikoring = getattr(riko_py_module, "rikoring")
+                except AttributeError as e:
+                    logger.debug(e)
+
+                try:
+                    riko_py_post_rikoring = getattr(riko_py_module, "post_rikoring")
+                except AttributeError as e:
+                    logger.debug(e)
+
+            # old version
+            old_versions: List[RikoPkg] = []
+            for i in range(0, len(gen_cbs_ov)):
+                pkg = RikoPkg(riko_toml.get_category(), gen_cbs[i], riko_toml.get_name(), gen_cbs_ov[i].version,
+                              gen_cbs_ov[i].upstream_version)
+                pkg.set_manifest(gen_cbs_ov[i].manifest)
+                pkg.add_policies([p for p in gen_cbs_ov[i].policies])
+                old_versions.append(pkg)
+
+            # new version
+            new_versions: List[RikoPkg] = []
+            for i in range(0, len(gen_cbs_ov)):
+                pkg = RikoPkg(riko_toml.get_category(), gen_cbs[i], riko_toml.get_name(), gen_cbs_ov[i].version, gv, riko_toml_upstream)
+                pkg.set_manifest(riko_yaml_cbs[gen_cbs[i]])
+                new_versions.append(pkg)
+
+            # rikoring
+            if riko_py_rikoring is not None:
+                try:
+                    riko_py_rikoring(old_versions, new_versions)
+                except Exception as e:
+                    logger.error(e)
+                    traceback.print_exc()
+
+            # manifests generate rules
+            for n, m in riko_yaml_cbs.items():
+                manifests_reasoning(m)
+
+            # manifests validate
+            for v in new_versions:
+                ma, rd = v.get_manifest()
+                assert not rd
+
+                if manifests_validate(ma):
+                    v.set_manifest_ready()
+                else:
+                    logger.error(f"manifest validation failed for package {v.get_combo()} version {ma["metadata"]["upstream_version"]}")
+                    logger.info(f"see failed manifests content: {ma}")
+
+            # post_rikoring
+            if riko_py_post_rikoring is not None:
+                try:
+                    riko_py_post_rikoring(old_versions, new_versions)
+                except Exception as e:
+                    logger.error(e)
+                    traceback.print_exc()
+
+            # check `keep_back` policy
+            for i in range(0, len(new_versions)):
+                if old_versions[i].accept_policy("keep_back"):
+                    ma, rd = new_versions[i].get_manifest()
+                    oma, _ = old_versions[i].get_manifest()
+                    if not rd:
+                        continue
+                    if len(oma["distfiles"]) != len(ma["distfiles"]):
+                        continue
+
+                    sums = {}
+                    osums = {}
+                    for d in ma["distfiles"]:
+                        sums[d["name"]] = (d["checksums"]["sha256"], d["checksums"]["sha512"])
+                    for d in oma["distfiles"]:
+                        osums[d["name"]] = (d["checksums"]["sha256"], d["checksums"]["sha512"])
+
+                    same = True
+                    for n, s in sums.items():
+                        if n not in osums.keys():
+                            same = False
+                            break
+                        if osums[n][0] != s[0] or osums[n][1] != s[1]:
+                            same = False
+                            break
+                    if same:
+                        new_versions[i].set_manifest_not_ready()
+                        logger.info(f"`keep_back` for package {new_versions[i].get_combo()}, version "
+                                    f"{ma["metadata"]["upstream_version"]} and version "
+                                    f"{oma["metadata"]["upstream_version"]} have same checksums")
+
+            # write toml
+            new_gen = False
+            for v in new_versions:
+                ma, rd = v.get_manifest()
+                if not rd:
+                    continue
+
+                ensure_dir(riko_manifests_dir / v.get_category())
+                ensure_dir(riko_manifests_dir / v.get_category() / v.get_combo())
+                new_toml = riko_manifests_dir / v.get_category() / v.get_combo() / f"{str(v.get_version())}.toml"
+                with open(new_toml, "wb") as nt:
+                    tomli_w.dump(ma, nt)
+
+                cmd: List[str] = ["ruyi", "admin", "format-manifest", str(new_toml), ]
+                env = os.environ.copy()
+
+                process = subprocess.Popen(cmd, env=env)
+                ret = process.wait()
+                if ret != 0:
+                    raise subprocess.CalledProcessError(ret, cmd)
+
+                new_gen = True
+                logger.info(f"new manifest for package {v.get_combo()} version {ma["metadata"]["upstream_version"]}")
+
+            if not new_gen:
+                logger.warning(f"no manifest for upstream {riko_toml.get_name()} version {gv}")
+
     else:
         # riko v0.0.1
         # packaging with single riko.py
