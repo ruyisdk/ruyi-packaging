@@ -176,6 +176,19 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 else:
                     raise NotImplementedError(f"substream not implemented for _label {_label}")
 
+            def _replace(_old: str, _new: str) -> str:
+                _orig = ""
+                _tree = om
+                for _l in _label:
+                    if _l in om.keys():
+                        _tree = om[_l]
+                    else:
+                        return ""
+
+                if isinstance(_tree, str):
+                    return _tree.replace(_old, _new)
+                return ""
+
             def _file(_name_url: Tuple[str, str]) -> str:
                 if _name_url[0] not in _files.keys():
                     _files[_name_url[0]] = {}
@@ -200,6 +213,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                                    "old_upstream_version": _old_upstream_version}
                         _g_calls = {"assign": _assign,
                                     "substring": _substring,
+                                    "replace": _replace,
                                     "regex": _regex,
                                     "disk": _disk,}
                         if riko_yaml_ast_check(v, _g_vars, _g_calls):
