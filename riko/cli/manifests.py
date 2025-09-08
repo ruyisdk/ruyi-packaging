@@ -175,6 +175,13 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                         return _orig[:-len(t)]
                 return _orig
 
+            def _map_and_uncompress(_name: str, _map: str):
+                if _name not in _files.keys():
+                    _files[_name] = {}
+
+                _files[_name]["map"] = _map
+                _files[_name]["uncompressed"] = _uncompress(_name)
+
             # riko.yaml api
             def _assign(_parm) -> str:
                 return str(_parm)
@@ -217,11 +224,19 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 return ""
 
             def _disk(_name_url: Tuple[str, str]) -> str:
-                if _name_url[0] not in _files.keys():
-                    _files[_name_url[0]] = {}
+                _map_and_uncompress(_name_url[0], "disk")
+                return _file(_name_url)
 
-                _files[_name_url[0]]["map"] = "disk"
-                _files[_name_url[0]]["uncompressed"] = _uncompress(_name_url[0])
+            def _root(_name_url: Tuple[str, str]) -> str:
+                _map_and_uncompress(_name_url[0], "root")
+                return _file(_name_url)
+
+            def _boot(_name_url: Tuple[str, str]) -> str:
+                _map_and_uncompress(_name_url[0], "boot")
+                return _file(_name_url)
+
+            def _uboot(_name_url: Tuple[str, str]) -> str:
+                _map_and_uncompress(_name_url[0], "uboot")
                 return _file(_name_url)
 
             # bfs run ast
@@ -236,7 +251,10 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                                     "substring": _substring,
                                     "replace": _replace,
                                     "regex": _regex,
-                                    "disk": _disk,}
+                                    "disk": _disk,
+                                    "root": _root,
+                                    "boot": _boot,
+                                    "uboot": _uboot,}
                         if riko_yaml_ast_check(v, _g_vars, _g_calls):
                             _ym_t[k] = eval(compile(v, filename="<expr>", mode="eval"), _g_vars | _g_calls)
                             if not isinstance(_ym_t[k], str):
