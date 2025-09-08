@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import logging
 import os
+import re
 import subprocess
 import tomli_w
 import traceback
@@ -113,11 +114,13 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                         list_new.append(tree_update_inner("k", v)["k"])
                 elif isinstance(value[0], str):
                     for s in value:
-                        list_new.append(ast.parse(s, mode="eval"))
+                        list_new.append(tree_update_inner("k", s)["k"])
                 else:
                     raise RuntimeError(f"Unexpected type {type(value)}")
                 return {key: list_new}
             elif isinstance(value, str):
+                if re.match(r"^[a-zA-Z0-9 ,\-+.]+$", value):
+                    return {key: value}
                 return {key: ast.parse(value, mode="eval")}
             elif value is None:
                 return {key: ""}
