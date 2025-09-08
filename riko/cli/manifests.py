@@ -84,8 +84,8 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                              f"`{riko_toml.get_category()}` package {c} version {pkg_ver.upstream_version}")
                 logger.info(f"{up_name} manifest {c} combo base on old version `{pkg_ver.upstream_version}`")
             else:
-                raise FileNotFoundError(f"No ruyi packages-index manifest for category `{riko_toml.get_category()}` "
-                                        f"package {c} version {old_ver} found")
+                logger.info(f"No ruyi packages-index manifest for category `{riko_toml.get_category()}` "
+                            f"package {c} version {old_ver} found")
         gen_cbs_ov.append(pkg_ver)
 
     # output dir
@@ -143,6 +143,7 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
         # riko.yaml ast check function
         def riko_yaml_ast_check(exp: ast.Expression, g_vars: Dict, g_calls: Dict) -> bool:
             _ast_allowed = (ast.Expression, ast.Call, ast.Name, ast.Load, ast.Constant, ast.Tuple)
+            # TODO:
             return True
 
         # riko.yaml running functions
@@ -184,7 +185,9 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
                 _tree = om
                 for _l in _label:
                     if _l in om.keys():
-                        _tree = om[_l]
+                        _tree = om.get(_l)
+                        if _tree is None:
+                            raise RuntimeError(f"no such key in old version manifest {_l}")
                     else:
                         return ""
 
@@ -279,7 +282,6 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
             for i in range(0, len(gen_cbs)):
                 if gen_cbs[i] in riko_yaml.keys():
                     riko_yaml_ast = tree_update(riko_yaml_source, riko_yaml[gen_cbs[i]])
-
 
                     old_manifests = gen_cbs_ov[i].get_manifest()
                     new_manifests = {"metadata": {"upstream_version": gv}}
