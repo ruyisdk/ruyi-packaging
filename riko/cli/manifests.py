@@ -11,7 +11,7 @@ import tomli_w
 import traceback
 import yaml
 
-from typing import Dict, List, Tuple
+from typing import Callable, Dict, List, Tuple
 
 from .utils import ensure_dir
 from ..api import RikoPkg
@@ -24,7 +24,7 @@ from ..upstreams.regex import RegexUpstream
 logger = logging.getLogger(__name__)
 
 
-def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
+def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
     """
     Generate packages-index manifests
     :param up_name: upstream name
@@ -70,8 +70,8 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
         raise FileNotFoundError(f"No riko upstream package `{up_name}` found")
 
     # load old packages-index manifest
-    gen_cbs: list[str] = riko_toml.get_combos()
-    gen_cbs_ov: list[PackageVersion] = []
+    gen_cbs: List[str] = riko_toml.get_combos()
+    gen_cbs_ov: List[PackageVersion] = []
     for c in gen_cbs:
         pkg_ver = get_riko().get_packages_index_manifest(riko_toml.get_category(), c, old_ver)
         if pkg_ver is None:
@@ -287,16 +287,34 @@ def manifests(up_name: str, gen_vers: list[str], down_grade: bool):
 
             return ym
 
-        def manifests_reasoning(_ma: dict):
+        # manifests reasoning rule set
+        def manifests_r1(_facts: Dict) -> bool:
+            return False
+
+        def manifests_reasoning(_ma: Dict):
             """
             generate full manifests by rules
             :param _ma:
             :return:
             """
-            # TODO:
-            pass
+            _rules: List[Callable[[Dict], bool]] = [
+                manifests_r1,
+            ]
+            _update = False
+            _count = 0
 
-        def manifests_validate(_ma: dict) -> bool:
+            while _count < 100:
+                for r in _rules:
+                    _update = _update or r(_ma)
+
+                if not _update:
+                    break
+                _count += 1
+
+            if _update and _count >= 100:
+                logger.warning("rule reasoning run so many times")
+
+        def manifests_validate(_ma: Dict) -> bool:
             """
             check manifests dict keys and values
             :param _ma:
