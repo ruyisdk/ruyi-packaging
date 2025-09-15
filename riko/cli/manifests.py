@@ -208,20 +208,26 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                 else:
                     raise NotImplementedError(f"substream not implemented for _label {_label}")
 
-            def _replace(_old: str, _new: str) -> str:
-                _orig = ""
+            def _copy():
                 _tree = om
                 for _l in _label:
-                    if _l in om.keys():
-                        _tree = om.get(_l)
-                        if _tree is None:
-                            raise RuntimeError(f"no such key in old version manifest {_l}")
-                    else:
-                        return ""
+                    _tree = om.get(_l)
+                    if _tree is None:
+                        break
+                return _tree
 
-                if isinstance(_tree, str):
-                    return _tree.replace(_old, _new)
-                return ""
+            def _copy_str() -> str:
+                _tree = _copy()
+
+                if not isinstance(_tree, str):
+                    raise RuntimeError(f"no such key in old version manifest {_label}")
+
+                return _tree
+
+            def _replace(_old: str, _new: str) -> str:
+                _tree = _copy_str()
+
+                return _tree.replace(_old, _new)
 
             def _disk(_name_url: Tuple[str, str]) -> str:
                 _map_and_uncompress(_name_url[0], "disk")
@@ -248,6 +254,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                         _g_vars = {"upstream_version": _upstream_version,
                                    "old_upstream_version": _old_upstream_version}
                         _g_calls = {"assign": _assign,
+                                    "copy": _copy_str,
                                     "substring": _substring,
                                     "replace": _replace,
                                     "regex": _regex,
