@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"Official Ubuntu {upstream_version} Server image for SiFive HiFive Unmatched"
+    vendor:
+      name: Ubuntu
+      eula:
+
+ubuntu-server-riscv64-sifive-unmatched:
+  version: version(minor=(_v := upstream_version.replace(".", ""))[:4], patch=_v[4:] if len(_v) > 4 else 0)
+  distfiles:
+    - name: disk(regex(r"preinstalled-server-riscv64\+unmatched.img.xz$"))

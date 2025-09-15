@@ -1,0 +1,13 @@
+[nvchecker]
+source = "regex"
+url = "https://mirror.tuna.tsinghua.edu.cn/ubuntu-cdimage/releases/"
+regex = '<a href="([\d.]+)/" title="[\d.]+">[\d.]+/</a>'
+
+[source]
+regex_file_url = "{{nvchecker.url}}{{upstream_version}}/release/"
+regex_file_regex = '<a href="ubuntu-.+" title="ubuntu-.+">(ubuntu-.+)</a>'
+
+[entities]
+image-combo = [
+    "ubuntu-server-riscv64-sifive-unmatched",
+]
