@@ -6,6 +6,7 @@ import importlib.util
 import logging
 import os
 import re
+import semver
 import subprocess
 import tomli_w
 import traceback
@@ -147,7 +148,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             return True
 
         # riko.yaml running functions
-        def riko_yaml_run(_up, om: Dict, nm: Dict, ym: Dict) -> Dict:
+        def riko_yaml_run(_up, _ov: semver.Version, om: Dict, nm: Dict, ym: Dict) -> Dict:
             # riko.yaml vals
             _upstream_version = nm["metadata"]["upstream_version"]
             _old_upstream_version = om["metadata"]["upstream_version"]
@@ -183,6 +184,17 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                 _files[_name]["uncompressed"] = _uncompress(_name)
 
             # riko.yaml api
+            def _version(major=None, minor=None, patch=None) -> str:
+                _nv = _ov
+                if major is not None:
+                    _nv = _nv.replace(major=major)
+                if minor is not None:
+                    _nv = _nv.replace(minor=minor)
+                if patch is not None:
+                    _nv = _nv.replace(patch=patch)
+
+                return str(_nv)
+
             def _assign(_parm) -> str:
                 return str(_parm)
 
@@ -254,6 +266,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                         _g_vars = {"upstream_version": _upstream_version,
                                    "old_upstream_version": _old_upstream_version}
                         _g_calls = {"assign": _assign,
+                                    "version": _version,
                                     "copy": _copy_str,
                                     "substring": _substring,
                                     "replace": _replace,
@@ -602,11 +615,17 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                 if gen_cbs[i] in riko_yaml.keys():
                     riko_yaml_ast = tree_update(riko_yaml_source, riko_yaml[gen_cbs[i]])
 
+                    old_version = gen_cbs_ov[i].get_version()
                     old_manifests = gen_cbs_ov[i].get_manifest()
                     new_manifests = {"metadata": {"upstream_version": gv}}
 
-                    manifest_stage1 = riko_yaml_run(riko_toml_upstream, old_manifests, new_manifests, riko_yaml_ast)
-                    riko_yaml_cbs[gen_cbs[i]] = manifest_stage1
+                    manifest_stage1 = riko_yaml_run(riko_toml_upstream, old_version, old_manifests, new_manifests, riko_yaml_ast)
+
+                    new_version = str(old_version)
+                    if "version" in manifest_stage1:
+                        new_version = manifest_stage1["version"]
+                        manifest_stage1.pop("version")
+                    riko_yaml_cbs[gen_cbs[i]] = (new_version, manifest_stage1)
 
             # check riko.py
             riko_py_rikoring = None
@@ -640,8 +659,8 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             # new version
             new_versions: List[RikoPkg] = []
             for i in range(0, len(gen_cbs_ov)):
-                pkg = RikoPkg(riko_toml.get_category(), gen_cbs[i], riko_toml.get_name(), gen_cbs_ov[i].version, gv, riko_toml_upstream)
-                pkg.set_manifest(riko_yaml_cbs[gen_cbs[i]])
+                pkg = RikoPkg(riko_toml.get_category(), gen_cbs[i], riko_toml.get_name(), semver.Version.parse(riko_yaml_cbs[gen_cbs[i]][0]), gv, riko_toml_upstream)
+                pkg.set_manifest(riko_yaml_cbs[gen_cbs[i]][1])
                 new_versions.append(pkg)
 
             # rikoring
@@ -654,7 +673,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
             # manifests generate rules
             for n, m in riko_yaml_cbs.items():
-                manifests_reasoning(m)
+                manifests_reasoning(m[1])
 
             # manifests validate
             for v in new_versions:
