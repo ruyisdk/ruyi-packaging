@@ -325,6 +325,37 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
             return False
 
+        def manifests_r5(_facts: Dict) -> bool:
+            """
+            from distfiles.name to blob
+            :param _facts:
+            :return:
+            """
+            if "blob" not in _facts.keys():
+                _facts["blob"] = {}
+            _blob = _facts.get("blob")
+            if "distfiles" in _blob.keys():
+                return False
+
+            if "provisionable" not in _facts.keys():
+                return False
+
+            _map = _facts.get("provisionable")
+            if _map is None or "partition_map" not in _map.keys() or "strategy" not in _map.keys():
+                return False
+
+            _strategy = _facts["provisionable"]["strategy"]
+            _distfiles = []
+            if _strategy in ["dd-v1", "fastboot-v1(lpi4a-uboot)", "fastboot-v1"]:
+                for _f in _facts["distfiles"]:
+                    _distfiles.append(_f["name"])
+
+            if len(_distfiles) > 0:
+                _facts["blob"]["distfiles"] = _distfiles
+                return True
+
+            return False
+
         def manifests_reasoning(_ma: Dict):
             """
             generate full manifests by rules
@@ -333,6 +364,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             """
             _rules: List[Callable[[Dict], bool]] = [
                 manifests_r1,
+                manifests_r5,
             ]
             _update = False
             _count = 0
@@ -343,7 +375,9 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
                 if not _update:
                     break
+
                 _count += 1
+                _update = False
 
             if _update and _count >= 100:
                 logger.warning("rule reasoning run so many times")
