@@ -452,8 +452,126 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             :param _ma:
             :return:
             """
-            # TODO:
-            return False
+
+            # empty type to show its type, List cannot be empty, Dict can be empty
+            # but List and Dict cannot be empty in real manifests
+            # if str not empty, value in manifest must be equal to that in the template
+            _key_must = {
+                "format": "v1",
+                "metadata": {
+                    "desc": "",
+                    "vendor": {"name": "", "eula": "", },
+                    "upstream_version": "",
+                },
+                "distfiles": [{
+                    "name": "",
+                    "size": "",
+                    "urls": ["", ],
+                    "restrict": ["", ],
+                    "checksums": {"sha256": "", "sha512": "", },
+                }, ],
+                "blob": {
+                    "distfiles": ["", ],
+                },
+                "provisionable": {
+                    "strategy": "",
+                    "partition_map": {},
+                },
+            }
+            _key_may = {
+                "provisionable": {
+                    "disk": "",
+                    "root": "",
+                    "boot": "",
+                    "uboot": "",
+                },
+            }
+
+            def dfs_validate(_templt: Dict, _type: str, _rkeys: Dict) -> bool:
+                if _type not in ["must", "may"]:
+                    return False
+
+                _histories: List[int] = [0, ]
+                _keys: List[List[str]] = [[], ]
+                _trees: List[Dict] = [{}, ]
+                _branch: List[str] = []
+
+                _ts: List[str] = []
+                for _k in _templt.keys():
+                    _ts.append(_k)
+                _keys.append(_ts)
+                _histories.append(0)
+                _trees.append(_templt)
+                _i = 1
+
+                while _i > 0:
+                    while _histories[_i] < len(_keys[_i]):
+                        _k = _keys[_i][_histories[_i]]
+                        _v = _trees[_i][_k]
+                        _branch.append(_k)
+
+                        if isinstance(_v, str | List):
+                            _rv = None
+                            for _b in _branch:
+                                if _rv is None:
+                                    _rv = _rkeys.get(_b)
+                                else:
+                                    _rv = _rv.get(_b)
+
+                                if _rv is None:
+                                    break
+
+                            if _rv is None:
+                                if _type == "must":
+                                    logger.debug(f"no such key in check dict: {_branch}")
+                                    return False
+                                elif _type == "may":
+                                    pass
+                            else:
+                                if type(_rv) != type(_v):
+                                    logger.debug(f"type not same: {_rv} != {_v} of {_branch}")
+                                    return False
+                                if isinstance(_rv, List) and ( len(_rv) == 0 or type(_rv[0]) != type(_v[0]) ):
+                                    logger.debug(f"type not same: {_rv} != {_v} of {_branch}")
+                                    return False
+                                if isinstance(_rv, str) and _v != "" and _rv != _v:
+                                    logger.debug(f"type is str but value must same: {_rv} != {_v} of {_branch}")
+                                    return False
+
+                            # check end on this branch
+                            _branch.pop()
+                            # next branch
+                            _histories[_i] += 1
+
+                        elif isinstance(_v, Dict):
+                            # entre this tree
+                            _ts: List[str] = []
+                            for _k in _v.keys():
+                                _ts.append(_k)
+                            _keys.append(_ts)
+                            _trees.append(_v)
+                            _histories.append(0)
+                            _i += 1
+
+                    # finish this depth
+                    _histories.pop()
+                    _keys.pop()
+                    _trees.pop()
+                    _i -= 1
+                    if _i > 0:
+                        _branch.pop()
+                    _histories[_i] += 1
+
+                return True
+
+            if not dfs_validate(_key_must, "must", _ma):
+                logger.error(f"key must check failed")
+                return False
+            if not dfs_validate(_key_may, "may", _ma):
+                logger.error(f"key may check failed")
+                return False
+
+            return True
 
         # generating
         for gv in gen_vers:
