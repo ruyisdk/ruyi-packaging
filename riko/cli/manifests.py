@@ -358,7 +358,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
         def manifests_r9(_facts: Dict) -> bool:
             """
-            distfiles size and checksums
+            distfiles size, checksums and restrict
             :param _facts:
             :return:
             """
@@ -414,6 +414,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                 for _i in range(0, len(_sizes)):
                     _facts["distfiles"][_i]["size"] = _sizes[_i]
                     _facts["distfiles"][_i]["checksums"] = {"sha256": _sha256sums[_i], "sha512": _sha512sums[_i]}
+                    _facts["distfiles"][_i]["restrict"] = ["mirror"]
                 return True
 
             return False
