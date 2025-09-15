@@ -296,6 +296,33 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
         # manifests reasoning rule set
         def manifests_r1(_facts: Dict) -> bool:
+            """
+            from provisionable.partition_map to provisionable.strategy
+            :param _facts:
+            :return: fact is upgraded
+            """
+            if "provisionable" not in _facts.keys():
+                return False
+
+            _map = _facts.get("provisionable")
+            if _map is None or "partition_map" not in _map.keys() or "strategy" in _map.keys():
+                return False
+
+            _map = _map["partition_map"]
+            _strategy = ""
+            if len(_map) == 1:
+                if "disk" in _map.keys():
+                    _strategy = "dd-v1"
+                elif "uboot" in _map.keys():
+                    _strategy = "fastboot-v1(lpi4a-uboot)"
+            elif len(_map) == 2:
+                if "boot" in _map.keys() and "root" in _map.keys():
+                    _strategy = "fastboot-v1"
+
+            if _strategy != "":
+                _facts["provisionable"]["strategy"] = _strategy
+                return True
+
             return False
 
         def manifests_reasoning(_ma: Dict):
