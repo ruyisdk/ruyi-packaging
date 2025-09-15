@@ -286,7 +286,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             if "provisionable" not in ym.keys():
                 ym["provisionable"] = {"partition_map": {}}
             for ff in ym["distfiles"]:
-                ff["url"] = [_files[ff["name"]]["url"]]
+                ff["urls"] = [_files[ff["name"]]["url"]]
                 ym["provisionable"]["partition_map"][_files[ff["name"]]["map"]] = _files[ff["name"]]["uncompressed"]
 
             # info of _upstream_version
@@ -356,6 +356,68 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
             return False
 
+        def manifests_r9(_facts: Dict) -> bool:
+            """
+            distfiles size and checksums
+            :param _facts:
+            :return:
+            """
+            if "distfiles" not in _facts.keys():
+                return False
+            if not isinstance(_facts["distfiles"], List) or len(_facts["distfiles"]) == 0:
+                return False
+
+            _sizes = []
+            _sha256sums = []
+            _sha512sums = []
+
+            for _d in _facts["distfiles"]:
+
+                if "checksums" in _d.keys() or "size" in _d.keys():
+                    continue
+
+                _url: str = _d["urls"][0]
+                _f_loc = riko_cache_dir / _d["name"]
+                # TODO: do not use curl
+                _cmd: List[str] = ["curl", "-C", "-", "--retry", "3", "--retry-delay", "2", "--retry-all-errors",
+                                  "-L", _url, "-o", str(_f_loc), ]
+                _env = os.environ.copy()
+
+                if _f_loc.exists():
+                    _f_loc.unlink()
+
+                _process = subprocess.Popen(_cmd, env=_env)
+                _ret = _process.wait()
+                if _ret != 0:
+                    raise subprocess.CalledProcessError(_ret, _cmd)
+
+                # get size
+                _sizes.append(os.path.getsize(_f_loc))
+
+                # calculate hash
+                _sha256 = hashlib.sha256()
+                _sha512 = hashlib.sha512()
+
+                with open(_f_loc, "rb") as _f:
+                    while True:
+                        _c = _f.read(4 * 1024)
+                        if not _c:
+                            break
+
+                        _sha256.update(_c)
+                        _sha512.update(_c)
+
+                _sha256sums.append(_sha256.hexdigest())
+                _sha512sums.append(_sha512.hexdigest())
+
+            if len(_facts["distfiles"]) == len(_sizes) == len(_sha256sums) == len(_sha512sums):
+                for _i in range(0, len(_sizes)):
+                    _facts["distfiles"][_i]["size"] = _sizes[_i]
+                    _facts["distfiles"][_i]["checksums"] = {"sha256": _sha256sums[_i], "sha512": _sha512sums[_i]}
+                return True
+
+            return False
+
         def manifests_reasoning(_ma: Dict):
             """
             generate full manifests by rules
@@ -365,6 +427,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             _rules: List[Callable[[Dict], bool]] = [
                 manifests_r1,
                 manifests_r5,
+                manifests_r9,
             ]
             _update = False
             _count = 0
