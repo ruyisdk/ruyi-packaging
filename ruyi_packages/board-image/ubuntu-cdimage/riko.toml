@@ -1,6 +1,6 @@
 [nvchecker]
 source = "regex"
-url = "https://mirror.tuna.tsinghua.edu.cn/ubuntu-cdimage/releases/"
+url = "https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cdimage/releases/"
 regex = '<a href="([\d.]+)/" title="[\d.]+">[\d.]+/</a>'
 
 [source]
