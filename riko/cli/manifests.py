@@ -241,6 +241,10 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
                 return _tree.replace(_old, _new)
 
+            def _live(_name_url: Tuple[str, str]) -> str:
+                _map_and_uncompress(_name_url[0], "live")
+                return _file(_name_url)
+
             def _disk(_name_url: Tuple[str, str]) -> str:
                 _map_and_uncompress(_name_url[0], "disk")
                 return _file(_name_url)
@@ -271,6 +275,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                                     "substring": _substring,
                                     "replace": _replace,
                                     "regex": _regex,
+                                    "live": _live,
                                     "disk": _disk,
                                     "root": _root,
                                     "boot": _boot,
@@ -324,7 +329,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             _map = _map["partition_map"]
             _strategy = ""
             if len(_map) == 1:
-                if "disk" in _map.keys():
+                if "disk" in _map.keys() or "live" in _map.keys():
                     _strategy = "dd-v1"
                 elif "uboot" in _map.keys():
                     _strategy = "fastboot-v1(lpi4a-uboot)"
