@@ -1,0 +1,13 @@
+[nvchecker]
+source = "regex"
+url = "https://mirrors.tuna.tsinghua.edu.cn/OpenBSD/"
+regex = '<a href="([\d.]+)/" title="[\d.]+">[\d.]+/</a>'
+
+[source]
+regex_file_url = "{{nvchecker.url}}{{upstream_version}}/riscv64/"
+regex_file_regex = '<a href="([a-zA-Z0-9.]+)" title="[a-zA-Z0-9.]+">[a-zA-Z0-9.]+</a>'
+
+[entities]
+image-combo = [
+    "openbsd-riscv64-live",
+]
