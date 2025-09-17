@@ -1,0 +1,13 @@
+[nvchecker]
+source = "regex"
+url = "https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/"
+regex = '<a href="([\d.]+)/" title="[\d.]+">[\d.]+/</a>'
+
+[source]
+regex_file_url = "{{nvchecker.url}}{{upstream_version}}/targets/sifiveu/generic/"
+regex_file_regex = '<a href="([a-z0-9-_.]+)" title="[a-z0-9-_.]+">[a-z0-9-_.]+</a>'
+
+[entities]
+image-combo = [
+    "openwrt-sifive-unmatched",
+]
