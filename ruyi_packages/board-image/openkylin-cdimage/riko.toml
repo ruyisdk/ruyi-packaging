@@ -1,0 +1,14 @@
+[nvchecker]
+source = "regex"
+url = "https://releases.openkylin.top/"
+regex = '<a href="([\d.]+)/" title="[\d.]+">[\d.]+/</a>'
+
+[entities]
+image-combo = [
+    "openkylin-riscv64-sifive-unmatched",
+]
+
+# cannot get version list from the webpage
+# so no need to support it
+[policies]
+openkylin-riscv64-sifive-unmatched = ["skip"]
