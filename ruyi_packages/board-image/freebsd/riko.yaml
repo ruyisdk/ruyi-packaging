@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"Official FreeBSD {upstream_version} RELEASE riscv64 live image"
+    vendor:
+      name: FreeBSD
+      eula:
+
+freebsd-riscv64-mini-live:
+  version: version(major=(_v := upstream_version.split("."))[0], minor=_v[1])
+  distfiles:
+    - name: live(regex(rf"^FreeBSD-{upstream_version}-RELEASE-riscv-riscv64-mini-memstick.img$"))
