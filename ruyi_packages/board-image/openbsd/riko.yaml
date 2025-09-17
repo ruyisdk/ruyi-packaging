@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"Official OpenBSD {upstream_version} riscv64 live image"
+    vendor:
+      name: OpenBSD
+      eula:
+
+openbsd-riscv64-live:
+  version: version(major=(_v := upstream_version.split("."))[0], minor=_v[1], patch=_v[2] if len(_v) > 2 else 0)
+  distfiles:
+    - name: live(regex(r"^install[\d]+.img$"))
