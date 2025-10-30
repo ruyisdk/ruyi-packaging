@@ -1,0 +1,35 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"RevyOS {upstream_version} image for Milk-V Meles"
+    vendor:
+      name: Milk-V
+      eula:
+
+revyos-milkv-meles:
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: boot(regex("^boot-.+\\.ext4"))
+    - name: root(regex("^root-.+\\.ext4"))
+
+uboot-revyos-milkv-meles-4g:
+  metadata:
+    desc: f"U-Boot image for Milk-V Meles (Single-rank, 4G RAM), for RevyOS, {upstream_version}"
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: uboot(substring("-4g"))
+
+uboot-revyos-milkv-meles-8g:
+  metadata:
+    desc: f"U-Boot image for Milk-V Meles (Dual-rank, 8G RAM), for RevyOS, {upstream_version}"
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: uboot(substring("u-boot-with-spl-meles.bin"))
+
+uboot-revyos-milkv-meles-16g:
+  metadata:
+    desc: f"U-Boot image for Milk-V Meles (Dual-rank, 16G RAM), for RevyOS, {upstream_version}"
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: uboot(substring("-16g"))
