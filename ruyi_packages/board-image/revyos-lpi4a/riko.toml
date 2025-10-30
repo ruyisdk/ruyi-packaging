@@ -15,10 +15,10 @@ image-combo = [
     "uboot-revyos-sipeed-lpi4a-16g"
 ]
 
-[policies]
+# [policies]
 # uboot not upgrade in each release
 # sometimes their hashes are the same with old version
 # see: https://github.com/ruyisdk/packages-index/pull/76
 # so use `keep_back` policy here
-uboot-revyos-sipeed-lpi4a-8g = ["keep_back"]
-uboot-revyos-sipeed-lpi4a-16g = ["keep_back"]
+# uboot-revyos-sipeed-lpi4a-8g = ["keep_back"]
+# uboot-revyos-sipeed-lpi4a-16g = ["keep_back"]
