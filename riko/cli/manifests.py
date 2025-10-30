@@ -101,32 +101,42 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
         assert riko_yaml_orig["format"] == "v1"
 
         # riko.yaml parsing functions
-        def tree_update_inner(key: str, value: Dict | List | str) -> Dict:
+        def tree_parse_inner(key: str, value: Dict | List | str) -> Dict:
             if isinstance(value, Dict):
                 tree_new = {}
                 for k, v in value.items():
-                    tree_new.update(tree_update_inner(k, v))
+                    tree_new.update(tree_parse_inner(k, v))
 
                 return {key: tree_new}
             elif isinstance(value, List):
                 list_new = []
                 if isinstance(value[0], Dict):
                     for v in value:
-                        list_new.append(tree_update_inner("k", v)["k"])
+                        list_new.append(tree_parse_inner("k", v)["k"])
                 elif isinstance(value[0], str):
                     for s in value:
-                        list_new.append(tree_update_inner("k", s)["k"])
+                        list_new.append(tree_parse_inner("k", s)["k"])
                 else:
                     raise RuntimeError(f"Unexpected type {type(value)}")
                 return {key: list_new}
             elif isinstance(value, str):
+                # remain some str unchanged as str
                 if re.match(r"^[a-zA-Z0-9 ,\-+.]+$", value):
                     return {key: value}
+                # treat rest str as expr
                 return {key: ast.parse(value, mode="eval")}
             elif value is None:
                 return {key: ""}
             else:
                 raise RuntimeError(f"Unexpected type {type(value)}")
+
+        def tree_update_inner(tree_old: Dict, tree_up: Dict) -> None:
+            for k in tree_up.keys():
+                if k in tree_old.keys() and isinstance(tree_old[k], Dict) and isinstance(tree_up[k], Dict):
+                    # keep old keys in old Dict
+                    tree_update_inner(tree_old[k], tree_up[k])
+                else:
+                    tree_old[k] = tree_up[k]
 
         def tree_update(tree_old: Dict, tree_raw: Dict) -> Dict:
             """
@@ -137,7 +147,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             """
             tree_new = copy.deepcopy(tree_old)
 
-            tree_new.update(tree_update_inner("k", tree_raw)["k"])
+            tree_update_inner(tree_new, tree_parse_inner("k", tree_raw)["k"])
 
             return tree_new
 
@@ -613,11 +623,13 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
             riko_yaml_source = {}
             riko_yaml_cbs = {}
+            # initial packages-index toml cfgs from "source" section in riko.yaml
             if "source" in riko_yaml.keys():
                 riko_yaml_source = tree_update({"format": riko_yaml["format"]}, riko_yaml["source"])
 
             for i in range(0, len(gen_cbs)):
                 if gen_cbs[i] in riko_yaml.keys():
+                    # update toml cfgs from each package section in riko.yaml
                     riko_yaml_ast = tree_update(riko_yaml_source, riko_yaml[gen_cbs[i]])
 
                     old_version = gen_cbs_ov[i].get_version()
