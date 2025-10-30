@@ -1,0 +1,28 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"RevyOS {upstream_version} image for Sipeed LicheePi 4A"
+    vendor:
+      name: PLCT
+      eula:
+
+revyos-sipeed-lpi4a:
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: boot(regex("^boot-.+\\.ext4"))
+    - name: root(regex("^root-.+\\.ext4"))
+
+uboot-revyos-sipeed-lpi4a-8g:
+  metadata:
+    desc: f"U-Boot image for LicheePi 4A (8G RAM) and RevyOS {upstream_version}"
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: uboot(substring("u-boot-with-spl-lpi4a-main.bin"))
+
+uboot-revyos-sipeed-lpi4a-16g:
+  metadata:
+    desc: f"U-Boot image for LicheePi 4A (16G RAM) and RevyOS {upstream_version}"
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: uboot(substring("u-boot-with-spl-lpi4a-16g"))
