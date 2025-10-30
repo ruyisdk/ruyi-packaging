@@ -4,7 +4,7 @@ source:
   metadata:
     desc: f"RevyOS {upstream_version} image for Milk-V Meles"
     vendor:
-      name: Milk-V
+      name: PLCT
       eula:
 
 revyos-milkv-meles:
