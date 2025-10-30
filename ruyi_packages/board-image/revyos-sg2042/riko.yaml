@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"RevyOS {upstream_version} image for Milk-V Pioneer Box with SG2042"
+    vendor:
+      name: PLCT
+      eula:
+
+revyos-milkv-pioneer:
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: disk(regex(fr"revyos-pioneer-{upstream_version}-\d+\.img\.zst"))
