@@ -15,6 +15,6 @@ image-combo = [
     "uboot-revyos-sipeed-lcon4a-16g"
 ]
 
-[policies]
-uboot-revyos-sipeed-lcon4a-8g = ["keep_back"]
-uboot-revyos-sipeed-lcon4a-16g = ["keep_back"]
+# [policies]
+# uboot-revyos-sipeed-lcon4a-8g = ["keep_back"]
+# uboot-revyos-sipeed-lcon4a-16g = ["keep_back"]
