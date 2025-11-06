@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"Buildroot SDK & FreeRTOS image for Sipeed LicheeRV Nano, {upstream_version}"
+    vendor:
+      name: Sipeed
+      eula:
+  version: version(minor=upstream_version, patch=0)
+
+buildroot-sdk-sipeed-licheervnano:
+  distfiles:
+    - name: disk(substring(""))
