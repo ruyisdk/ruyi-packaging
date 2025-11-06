@@ -10,6 +10,8 @@ regex_file_regex = '<a href="(bianbu.+)">bianbu.+</a>'
 
 [entities]
 image-combo = [
+    "bianbu-minimal-spacemit-k1",
+    "bianbu-desktop-spacemit-k1",
     "bianbu-minimal-spacemit-k1-sd",
-    "bianbu-desktop-spacemit-k1-sd"
+    "bianbu-desktop-spacemit-k1-sd",
 ]
