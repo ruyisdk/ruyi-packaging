@@ -1,0 +1,25 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"Official Bianbu Desktop {upstream_version} for SpacemiT K1"
+    vendor:
+      name: SpacemiT
+      eula:
+  version: version(major=(_v := upstream_version[1:].split("."))[0], minor=_v[1], patch=_v[2] if len(_v) > 2 else 0)
+
+bianbu-minimal-spacemit-k1:
+  distfiles:
+    - name: titan(regex(f"^bianbu-[\\d]+\\.[\\d]+-desktop-k1-{upstream_version}-release-[\\d]+.zip$"))
+
+bianbu-desktop-spacemit-k1:
+  distfiles:
+    - name: titan(regex(f"^bianbu-[\\d]+\\.[\\d]+-desktop-k1-{upstream_version}-release-[\\d]+.zip$"))
+
+bianbu-desktop-spacemit-k1-sd:
+  distfiles:
+    - name: disk(regex(f"^bianbu-[\\d]+\\.[\\d]+-desktop-k1-{upstream_version}-release-[\\d]+.img.zip$"))
+
+bianbu-minimal-spacemit-k1-sd:
+  distfiles:
+    - name: disk(regex(f"^bianbu-[\\d]+\\.[\\d]+-minimal-k1-{upstream_version}-release-[\\d]+.img.zip$"))
