@@ -242,6 +242,10 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
             else:
                 raise NotImplementedError(f"substream not implemented for _label {_label}")
 
+        def _titan(_name_url: Tuple[str, str]) -> str:
+            _map_and_uncompress(_name_url[0], "titan")
+            return _file(_name_url)
+
         def _live(_name_url: Tuple[str, str]) -> str:
             _map_and_uncompress(_name_url[0], "live")
             return _file(_name_url)
@@ -273,6 +277,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
                                 "version": _version,
                                 "substring": _substring,
                                 "regex": _regex,
+                                "titan": _titan,
                                 "live": _live,
                                 "disk": _disk,
                                 "root": _root,
@@ -324,13 +329,24 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
         if _map is None or "partition_map" not in _map.keys() or "strategy" in _map.keys():
             return False
 
-        _map = _map["partition_map"]
+        _map: Dict = _map["partition_map"]
         _strategy = ""
         if len(_map) == 1:
             if "disk" in _map.keys() or "live" in _map.keys():
                 _strategy = "dd-v1"
             elif "uboot" in _map.keys():
                 _strategy = "fastboot-v1(lpi4a-uboot)"
+            elif "titan" in _map.keys():
+                _strategy = "spacemit-k1-v1"
+                _map.update({"gpt": "partition_universal.json",
+                             "bootinfo": "factory/bootinfo_sd.bin",
+                             "fsbl": "factory/FSBL.bin",
+                             "env": "env.bin",
+                             "opensbi": "fw_dynamic.itb",
+                             "uboot": "u-boot.itb",
+                             "bootfs": "bootfs.ext4",
+                             "rootfs": "rootfs.ext4"})
+                _map.pop("titan")
         elif len(_map) == 2:
             if "boot" in _map.keys() and "root" in _map.keys():
                 _strategy = "fastboot-v1"
@@ -362,7 +378,7 @@ def manifests(up_name: str, gen_vers: List[str], down_grade: bool):
 
         _strategy = _facts["provisionable"]["strategy"]
         _distfiles = []
-        if _strategy in ["dd-v1", "fastboot-v1(lpi4a-uboot)", "fastboot-v1"]:
+        if _strategy in ["dd-v1", "fastboot-v1(lpi4a-uboot)", "fastboot-v1", "spacemit-k1-v1"]:
             for _f in _facts["distfiles"]:
                 _distfiles.append(_f["name"])
 
