@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"RedleafOS {upstream_version} image for Xiangshan Nanhu"
+    vendor:
+      name: PLCT
+      eula:
+
+redleafos-xiangshan-nanhu:
+  version: version(minor=upstream_version, patch=0)
+  distfiles:
+    - name: disk(substring("debian-nanhu"))
