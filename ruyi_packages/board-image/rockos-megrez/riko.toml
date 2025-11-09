@@ -1,0 +1,14 @@
+[nvchecker]
+source = "regex"
+url = "https://mirror.iscas.ac.cn/rockos/images/generic/"
+regex = '<a href="([\d.]+_[\d.]+)/">[\d.]+_[\d.]+/</a>'
+
+[source]
+# see: riko.upstreams.regex.RegexUpstream
+regex_file_url = "{{nvchecker.url}}{{upstream_version}}/"
+regex_file_regex = '<a href="(.+)">.+</a> '
+
+[entities]
+image-combo = [
+    "rockos-milkv-megrez",
+]
