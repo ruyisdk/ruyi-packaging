@@ -1,0 +1,13 @@
+format: v1
+
+source:
+  metadata:
+    desc: f"RockOS {upstream_version} image for Milk-V Megrez with EIC7700"
+    vendor:
+      name: PLCT
+      eula:
+
+rockos-milkv-megrez:
+  version: version(minor=upstream_version.split('_')[1], patch=0)
+  distfiles:
+    - name: disk(substring("sdcard-rockos-"))
