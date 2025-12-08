@@ -11,5 +11,4 @@ def rikoring(old_pkgs: List[RikoPkg], new_pkgs: List[RikoPkg]) -> None:
     :return:
     """
     urls = new_pkgs[0].get_manifest()[0]["distfiles"][0]["urls"]
-    urls.append(urls[0].replace("mirrors.tuna.tsinghua.edu.cn/OpenBSD", "cdn.openbsd.org/pub/OpenBSD"))
-    urls.append(urls[0].replace("mirrors.tuna.tsinghua.edu.cn/OpenBSD", "ftp.openbsd.org/pub/OpenBSD"))
+    urls[0] = urls[0].replace("https://mirrors.tuna.tsinghua.edu.cn/OpenBSD", "mirror://openbsd/")
