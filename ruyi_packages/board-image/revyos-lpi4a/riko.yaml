@@ -18,7 +18,7 @@ uboot-revyos-sipeed-lpi4a-8g:
     desc: f"U-Boot image for LicheePi 4A (8G RAM) and RevyOS {upstream_version}"
   version: version(minor=upstream_version, patch=0)
   distfiles:
-    - name: uboot(substring("u-boot-with-spl-lpi4a-main.bin"))
+    - name: uboot(regex("u-boot-with-spl-lpi4a(-main)?.bin"))
 
 uboot-revyos-sipeed-lpi4a-16g:
   metadata:
