@@ -6,7 +6,9 @@ use_latest_release = true
 [entities]
 image-combo = [
     "armbian-pine64-star64",
+    "armbian-muse-pi-pro"
 ]
 
 [policies]
 armbian-pine64-star64 = ["skip"]
+armbian-muse-pi-pro = ["skip"]
