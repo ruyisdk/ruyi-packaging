@@ -1,0 +1,30 @@
+format: v1
+
+# 全局源配置 (参考 bianbu 的写法)
+source:
+  metadata:
+    vendor:
+      name: Armbian
+      eula: "GPL-2.0-or-later"
+  # Armbian 的版本号通常直接就是 release tag (如 24.04.1)，不需要像 bianbu 那样去掉 'v' 前缀
+  # 如果 upstream_version 带有 'v' 前缀，请取消下面这行的注释并调整逻辑
+  # version: version(major=(_v := upstream_version.lstrip('v').split("."))[0], minor=_v[1], patch=_v[2] if len(_v) > 2 else 0)
+
+# 定义 Muse Pi Pro 的包配置
+armbian-muse-pi-pro:
+  metadata:
+    # 动态描述，包含版本号
+    desc: f"Armbian Linux for Muse Pi Pro ({upstream_version})"
+    arch: "aarch64"
+
+  distfiles:
+    # 关键逻辑：
+    # 1. 使用 regex 匹配文件名。
+    #    请根据 GitHub 实际文件名调整正则！
+    #    假设文件名为: Armbian_MusePiPro_24.04.1_noble_current.img.xz
+    #    或者: armbian-muse-pi-pro-24.04.1.img.xz
+    # 2. 使用 disk() 包裹，因为这是 .img.xz 整盘镜像，对应 manifest 中的 partition_map: disk
+    - name: disk(regex(f"^.*[Mm]use[Pp][Ii]?[Pp][Rr][Oo].*\\.img\\.xz$"))
+
+    # 💡 备选方案：如果上面的正则太宽泛，可以使用更精确的匹配
+    # - name: disk(regex(f"^Armbian_MusePiPro_[\\d]+\\.[\\d]+.*\\.img\\.xz$"))
